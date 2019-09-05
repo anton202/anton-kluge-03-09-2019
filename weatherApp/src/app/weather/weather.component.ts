@@ -143,6 +143,7 @@ export class WeatherComponent implements OnInit {
         this.forecast = forecast.DailyForecasts;
         this.weeklyWeatherStatus = forecast.Headline.Text;
         this.locationName = 'Tel-Aviv'
+        this.locationKey = telAvivLocationKey;
         this.temperature = this.setTemperature(forecast);
         this.weatherIcon = this.setWeatherIcon(forecast.DailyForecasts[0].Day.Icon)
       },
