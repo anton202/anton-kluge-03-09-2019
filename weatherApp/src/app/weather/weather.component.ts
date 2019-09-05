@@ -105,10 +105,8 @@ export class WeatherComponent implements OnInit {
       return this.getFavoriteForecast(locationKey);
     }
     if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(this.getForecastByGeoLocation.bind(this))
-    } else {
-      this.getTelAvivForecast();
-    }
+      navigator.geolocation.getCurrentPosition(this.getForecastByGeoLocation.bind(this),this.getTelAvivForecast.bind(this))
+    } 
   }
 
   private getForecastByGeoLocation(position: any): void {
@@ -144,6 +142,8 @@ export class WeatherComponent implements OnInit {
         this.forecast = forecast.DailyForecasts;
         this.weeklyWeatherStatus = forecast.Headline.Text;
         this.locationName = 'Tel-Aviv'
+        this.temperature = this.setTemperature(forecast);
+        this.weatherIcon = this.setWeatherIcon(forecast.DailyForecasts[0].Day.Icon)
       },
         error => this.handleError('failed fetching Tel Aviv forecast, try again.')
       )
