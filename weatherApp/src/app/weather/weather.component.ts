@@ -127,8 +127,9 @@ export class WeatherComponent implements OnInit {
     )
 
     this.apiService.getLocationKeyByGeoLocation(latitude, longitude)
-      .subscribe((locationInfo: { LocalizedName }) => {
+      .subscribe((locationInfo: { LocalizedName,Key }) => {
         this.locationName = locationInfo.LocalizedName;
+        this.locationKey = locationInfo.Key;
       },
         error => this.handleError('failed getting location name, please try to refresh the page')
       )
