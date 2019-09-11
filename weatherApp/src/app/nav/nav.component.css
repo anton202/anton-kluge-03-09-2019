@@ -3,11 +3,8 @@ nav{
     height: 8vh;
     display: flex;
     justify-content: center;
-    align-items: flex-end;
-   
+    align-items: flex-end; 
 }
-
-
 
 a:link, a:active, a:visited{
     color: white;
