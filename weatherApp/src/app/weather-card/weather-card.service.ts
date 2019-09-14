@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-
 
 @Injectable({
     providedIn: 'root'
@@ -8,9 +6,9 @@ import { HttpClient } from '@angular/common/http';
 export class WeatherCardService {
     public daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wedensday', 'Thursday', 'Friday', 'Saturday'];
     
-    constructor(private http: HttpClient) { }
+    constructor() { }
 
-    public getDayOfWeek(date): string {
+    public getDayOfWeek(date: string): string {
         const getDate = new Date(date).getDay();
         return this.daysOfWeek[getDate];
     }

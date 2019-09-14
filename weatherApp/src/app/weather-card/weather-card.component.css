@@ -28,13 +28,11 @@
     width: 7.5rem;
 }
 
-
 @media (max-width: 640px) {
    .container{
        width: 80%;
        height: 6rem;
        margin: auto;
-      
        margin-bottom: 1rem;
        flex-direction: row;
        align-items: center;

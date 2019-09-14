@@ -14,8 +14,8 @@ export class WeatherCardComponent implements OnInit {
   @Input() public favoriteData:favorite;
   public dayOfWeek: string;
   public temperature: number;
-  private iconNumber: string | number;
-  public weatherIcon:string | number;
+  private iconNumber:  number | string;
+  public weatherIcon:string ;
   public locationName: string
   
 
