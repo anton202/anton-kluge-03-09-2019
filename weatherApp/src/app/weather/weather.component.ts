@@ -2,15 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api/api.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { WeatherCardService } from '../weather-card/weather-card.service';
 import * as FavoritesAction from '../favorites/store/favorites.action';
 import { MatDialog } from '@angular/material/dialog';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
-
+import { FavoritesService } from '../favorites/favorites.service';
 
 
 @Component({
@@ -20,7 +18,7 @@ import { ErrorMessageComponent } from '../error-message/error-message.component'
 })
 export class WeatherComponent implements OnInit {
   public searchForm: FormGroup;
-  public locationNameSuggestion: Array<{LocalizedName, Key }>;
+  public locationNameSuggestion: Array<{ LocalizedName, Key }>;
   public locationKey: string;
   public locationNameDoseNotExist: boolean;
   public forecast: any[];
@@ -30,20 +28,19 @@ export class WeatherComponent implements OnInit {
   public temperature: number;
   public weatherIcon: string;
   public isFavorite: boolean;
-  private favorites: any;
-
+  
   constructor(
     private apiService: ApiService,
     private route: ActivatedRoute,
     private weatherCardService: WeatherCardService,
     private store: Store<{ favorites: { favorites } }>,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private favoritesService: FavoritesService
   ) { }
 
   ngOnInit() {
     this.searchFormItialization();
-    this.defaultForecast()
-    this.getFavoriteLocations();
+    this.defaultForecast();
   }
 
   private searchFormItialization(): void {
@@ -69,7 +66,7 @@ export class WeatherComponent implements OnInit {
       .subscribe(locationNames => {
         this.locationNameSuggestion = locationNames;
       },
-        error => this.handleError('something went wrong while searchong for location name, please try again or refresh the page')
+        () => this.handleError('something went wrong while searchong for location name, please try again or refresh the page')
       )
   }
 
@@ -84,16 +81,16 @@ export class WeatherComponent implements OnInit {
     this.locationNameDoseNotExist = false;
     this.apiService.getWeatherForecast(locationKey)
       .subscribe(forecast => {
-        this.checkIfFavorite(locationName);
+        this.isFavorite = this.favoritesService.checkIfFavorite(locationName);
         this.locationKey = locationKey;
         this.fetchingForecast = false;
         this.forecast = forecast.DailyForecasts;
         this.weeklyWeatherStatus = forecast.Headline.Text;
         this.locationName = locationName;
         this.temperature = this.setTemperature(forecast);
-        this.weatherIcon = this.setWeatherIcon(forecast.DailyForecasts[0].Day.Icon);
+        this.weatherIcon = this.weatherCardService.setWeatherIcon(forecast.DailyForecasts[0].Day.Icon);
       },
-        error => this.handleError('something went wrong while fetchong the forecast, please try again')
+        () => this.handleError('something went wrong while fetchong the forecast, please try again')
       )
   }
 
@@ -108,10 +105,10 @@ export class WeatherComponent implements OnInit {
     }
   }
 
-  private getForecastByGeoLocation(position: { coords: { latitude:number, longitude:number } }): void {
+  private getForecastByGeoLocation(position: { coords: { latitude: number, longitude: number } }): void {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
-  
+
     this.apiService.getLocationKeyByGeoLocation(latitude, longitude)
       .subscribe((locationInfo: { LocalizedName, Key }) => {
         this.locationName = locationInfo.LocalizedName;
@@ -123,12 +120,12 @@ export class WeatherComponent implements OnInit {
             this.forecast = forecast.DailyForecasts
             this.weeklyWeatherStatus = forecast.Headline.Text;
             this.temperature = this.setTemperature(forecast);
-            this.weatherIcon = this.setWeatherIcon(forecast.DailyForecasts[0].Day.Icon);
+            this.weatherIcon = this.weatherCardService.setWeatherIcon(forecast.DailyForecasts[0].Day.Icon);
           },
-          error => this.handleError('could not get weather forecast for your geo location.')
+            () => this.handleError('could not get weather forecast for your geo location.')
           )
       },
-        error => this.handleError('could not get weather forecast for your geo location.')
+        () => this.handleError('could not get weather forecast for your geo location.')
       )
   }
 
@@ -142,9 +139,9 @@ export class WeatherComponent implements OnInit {
         this.locationName = 'Tel-Aviv'
         this.locationKey = telAvivLocationKey;
         this.temperature = this.setTemperature(forecast);
-        this.weatherIcon = this.setWeatherIcon(forecast.DailyForecasts[0].Day.Icon)
+        this.weatherIcon = this.weatherCardService.setWeatherIcon(forecast.DailyForecasts[0].Day.Icon)
       },
-        error => this.handleError('failed fetching Tel Aviv forecast, try again.')
+        () => this.handleError('failed fetching Tel Aviv forecast, try again.')
       )
   }
 
@@ -156,38 +153,15 @@ export class WeatherComponent implements OnInit {
         this.forecast = forecast.DailyForecasts;
         this.locationName = this.route.snapshot.paramMap.get('locationName');
         this.temperature = this.setTemperature(forecast)
-        this.weatherIcon = this.setWeatherIcon(forecast.DailyForecasts[0].Day.Icon);
+        this.weatherIcon = this.weatherCardService.setWeatherIcon(forecast.DailyForecasts[0].Day.Icon);
         this.weeklyWeatherStatus = forecast.Headline.Text;
       },
-        error => this.handleError(`failed fetching forecast for ${this.route.snapshot.paramMap.get('locationName')}`)
+        () => this.handleError(`failed fetching forecast for ${this.route.snapshot.paramMap.get('locationName')}`)
       )
   }
 
   private setTemperature(forecastObj): number {
     return this.weatherCardService.convertToCelsius(forecastObj.DailyForecasts[0].Temperature.Maximum.Value);
-  }
-
-  private setWeatherIcon(iconNumber: number): string {
-    if (iconNumber < 10) {
-      return `https://developer.accuweather.com/sites/default/files/${'0' + iconNumber}-s.png`
-    }
-    return `https://developer.accuweather.com/sites/default/files/${iconNumber}-s.png`
-  }
-
-  private checkIfFavorite(locationName: string): void | boolean {
-    for (let i = 0; i < this.favorites.length; i++) {
-      if (locationName === this.favorites[i].name) {
-        return this.isFavorite = true;
-      }
-      this.isFavorite = false;
-    }
-  }
-
-  private getFavoriteLocations(): void {
-    this.store.select('favorites')
-      .subscribe(favorites => {
-        this.favorites = favorites.favorites;
-      })
   }
 
   private handleError(errorMessage: string): void {

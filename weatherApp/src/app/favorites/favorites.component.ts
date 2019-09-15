@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { FavoritesService } from './favorites.service';
 
 @Component({
   selector: 'app-favorites',
@@ -7,15 +7,12 @@ import { Store } from '@ngrx/store';
   styleUrls: ['./favorites.component.css']
 })
 export class FavoritesComponent implements OnInit {
-  favorites:any[];
+  favorites:Array<{}>;
 
-  constructor(private store: Store<{favorites:{favorites}}>) { }
+  constructor(private favoritesService: FavoritesService) { }
 
   ngOnInit() {
-    this.store.select('favorites')
-      .subscribe(favorites =>{
-        this.favorites = favorites.favorites;
-      })
+    this.favorites = this.favoritesService.favorites;
   }
 
 }
