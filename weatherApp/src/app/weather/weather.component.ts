@@ -26,10 +26,6 @@ export class WeatherComponent implements OnInit {
   public weeklyWeatherStatus: string;
   public isFavorite: boolean;
   public weather: Weather;
-  // public locationName: string;
-  // public locationKey: string;
-  // public temperature: number;
-  // public weatherIcon: string;
 
   constructor(
     private apiService: ApiService,
