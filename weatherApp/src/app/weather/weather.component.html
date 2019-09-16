@@ -19,11 +19,11 @@
   <div class="todays-weather-favorite">
     <div class="icon-city-container">
       <div class="weather-icon">
-        <img [src]="weatherIcon" alt="icon">
+        <img *ngIf="weather" [src]="weather.weatherIcon" alt="icon">
       </div>
       <div class="city-degree">
-        <span>{{locationName}}</span>
-        <span>{{temperature}}c</span>
+        <span *ngIf="weather">{{weather.locationName}}</span>
+        <span *ngIf="weather">{{weather.temperature}}c</span>
       </div>
     </div>
     <div class="favorite">

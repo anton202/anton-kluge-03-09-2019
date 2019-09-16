@@ -9,6 +9,7 @@ import * as FavoritesAction from '../favorites/store/favorites.action';
 import { MatDialog } from '@angular/material/dialog';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
 import { FavoritesService } from '../favorites/favorites.service';
+import { Weather } from './weather.model';
 
 
 @Component({
@@ -19,15 +20,16 @@ import { FavoritesService } from '../favorites/favorites.service';
 export class WeatherComponent implements OnInit {
   public searchForm: FormGroup;
   public locationNameSuggestion: Array<{ LocalizedName, Key }>;
-  public locationKey: string;
   public locationNameDoseNotExist: boolean;
-  public forecast: any[];
   public fetchingForecast: boolean = false;
+  public forecast: any[];
   public weeklyWeatherStatus: string;
-  public locationName: string;
-  public temperature: number;
-  public weatherIcon: string;
   public isFavorite: boolean;
+  public weather: Weather;
+  // public locationName: string;
+  // public locationKey: string;
+  // public temperature: number;
+  // public weatherIcon: string;
 
   constructor(
     private apiService: ApiService,
@@ -51,11 +53,11 @@ export class WeatherComponent implements OnInit {
 
   public addToFavorites(): void {
     if (this.isFavorite) {
-      this.store.dispatch(new FavoritesAction.RemoveFavorite(this.locationName));
+      this.store.dispatch(new FavoritesAction.RemoveFavorite(this.weather.locationName));
       this.isFavorite = false;
     } else {
       this.isFavorite = true;
-      this.store.dispatch(new FavoritesAction.AddToFavorites({ id: this.locationKey, name: this.locationName, weather: this.temperature, icon: this.weatherIcon }))
+      this.store.dispatch(new FavoritesAction.AddToFavorites(this.weather))
     }
   }
 
@@ -81,9 +83,9 @@ export class WeatherComponent implements OnInit {
     this.locationNameDoseNotExist = false;
     this.apiService.getWeatherForecast(locationKey)
       .subscribe(forecast => {
-        const weatherIcon = this.weatherCardService.setWeatherIcon(forecast.DailyForecasts[0].Day.Icon);
-        const isFavorite = this.favoritesService.checkIfFavorite(locationName);
-        this.setDataBinding(forecast.DailyForecasts,forecast.Headline.Text,locationName,this.setTemperature(forecast),weatherIcon,locationKey,isFavorite)
+        this.fetchingForecast = false;
+        this.isFavorite = this.favoritesService.checkIfFavorite(locationName);
+        this.setDataBinding(forecast, locationName, locationKey);
       },
         () => this.handleError('something went wrong while fetchong the forecast, please try again')
       )
@@ -111,8 +113,8 @@ export class WeatherComponent implements OnInit {
 
         this.apiService.getWeatherForecast(locationInfo.Key)
           .subscribe((forecast: any) => {
-            const weatherIcon = this.weatherCardService.setWeatherIcon(forecast.DailyForecasts[0].Day.Icon);
-            this.setDataBinding(forecast.DailyForecasts,forecast.Headline.Text,locationName,this.setTemperature(forecast),weatherIcon,locationKey);
+            this.fetchingForecast = false;
+            this.setDataBinding(forecast, locationName, locationKey);
           },
             () => this.handleError('could not get weather forecast for your geo location.')
           )
@@ -125,8 +127,8 @@ export class WeatherComponent implements OnInit {
     const telAvivLocationKey = '215854';
     this.apiService.getWeatherForecast(telAvivLocationKey)
       .subscribe(forecast => {
-        const weatherIcon = this.weatherCardService.setWeatherIcon(forecast.DailyForecasts[0].Day.Icon)
-        this.setDataBinding(forecast.DailyForecasts,forecast.Headline.Text,'Tel-Aviv',this.setTemperature(forecast),weatherIcon,telAvivLocationKey);
+        this.fetchingForecast = false;
+        this.setDataBinding(forecast, 'Tel-Aviv', telAvivLocationKey);
       },
         () => this.handleError('failed fetching Tel Aviv forecast, try again.')
       )
@@ -136,8 +138,8 @@ export class WeatherComponent implements OnInit {
     this.apiService.getWeatherForecast(locationKey)
       .subscribe(forecast => {
         const locationName = this.route.snapshot.paramMap.get('locationName');
-        const weatherIcon = this.weatherCardService.setWeatherIcon(forecast.DailyForecasts[0].Day.Icon);
-        this.setDataBinding(forecast.DailyForecasts,forecast.Headline.Text,locationName,this.setTemperature(forecast),weatherIcon,null,true);
+        this.fetchingForecast = false;
+        this.setDataBinding(forecast, locationName);
       },
         () => this.handleError(`failed fetching forecast for ${this.route.snapshot.paramMap.get('locationName')}`)
       )
@@ -147,23 +149,12 @@ export class WeatherComponent implements OnInit {
     return this.weatherCardService.convertToCelsius(forecastObj.DailyForecasts[0].Temperature.Maximum.Value);
   }
 
-  private setDataBinding(
-    forecast: any[],
-    weeklyWeatherStatus: string,
-    locationName: string,
-    temperature: number,
-    weatherIcon: string,
-    locationKey?: string,
-    isFavorite?: boolean
-  ){
-    this.fetchingForecast = false;
-    this.forecast = forecast;
-    this.weeklyWeatherStatus = weeklyWeatherStatus;
-    this.locationName = locationName;
-    this.temperature = temperature;
-    this.weatherIcon = weatherIcon;
-    this.locationKey = locationKey || undefined;
-    this.isFavorite = isFavorite || false;
+  private setDataBinding(forecast: any, locationName: string, locationKey?: string): void {
+    const weatherIcon = this.weatherCardService.setWeatherIcon(forecast.DailyForecasts[0].Day.Icon)
+    const temperature = this.setTemperature(forecast);
+    this.weeklyWeatherStatus = forecast.Headline.Text;
+    this.forecast = forecast.DailyForecasts;
+    this.weather = new Weather(locationName, temperature, weatherIcon, locationKey);
   }
 
   private handleError(errorMessage: string): void {

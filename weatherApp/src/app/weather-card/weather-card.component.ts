@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { WeatherCardService } from './weather-card.service';
-import { favorite } from '../favorites/store/favorites.action';
+import { Weather } from '../weather/weather.model';
 
 @Component({
   selector: 'app-weather-card',
@@ -11,7 +11,7 @@ import { favorite } from '../favorites/store/favorites.action';
 })
 export class WeatherCardComponent implements OnInit {
   @Input() public dailyForecast:{Date,Temperature,Day};
-  @Input() public favoriteData:favorite;
+  @Input() public favoriteData:Weather;
   public dayOfWeek: string;
   public temperature: number;
   public weatherIcon:string ;
@@ -26,15 +26,15 @@ export class WeatherCardComponent implements OnInit {
     this.dayOfWeek = this.weatherCardService.getDayOfWeek(this.dailyForecast.Date)
     this.weatherIcon= this.weatherCardService.setWeatherIcon(this.dailyForecast.Day.Icon)
   }else{
-    this.temperature = this.favoriteData.weather;
-    this.locationName = this.favoriteData.name
-    this.weatherIcon = this.favoriteData.icon;
+    this.temperature = this.favoriteData.temperature;
+    this.locationName = this.favoriteData.locationName
+    this.weatherIcon = this.favoriteData.weatherIcon;
   }
 }
  
 public showFavoriteWeather(): void{
 if (this.favoriteData){
-  this.router.navigate(['/weather',{locationKey:this.favoriteData.id, locationName:this.favoriteData.name}])
+  this.router.navigate(['/weather',{locationKey:this.favoriteData.locationKey, locationName:this.favoriteData.locationName}])
 }
 }
   
