@@ -26,6 +26,7 @@ export class WeatherComponent implements OnInit {
   public weeklyWeatherStatus: string;
   public isFavorite: boolean;
   public weather: Weather;
+  private telAvivLocationKey = '215854';
 
   constructor(
     private apiService: ApiService,
@@ -78,7 +79,7 @@ export class WeatherComponent implements OnInit {
     this.getWeather(locationKey, locationName);
   }
 
-  public getWeather(locationKey: string, locationName: string): void {
+  private getWeather(locationKey: string, locationName: string): void {
     this.fetchingForecast = true;
     this.locationNameDoseNotExist = false;
     this.apiService.getWeatherForecast(locationKey)
@@ -99,7 +100,7 @@ export class WeatherComponent implements OnInit {
       return this.getWeather(locationKey, locationName);
     }
     if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(this.getForecastByGeoLocation.bind(this), this.getTelAvivForecast.bind(this))
+      navigator.geolocation.getCurrentPosition(this.getForecastByGeoLocation.bind(this), this.getWeather.bind(this,this.telAvivLocationKey,'Tel-Aviv'))
     }
   }
 
@@ -115,17 +116,6 @@ export class WeatherComponent implements OnInit {
         this.getWeather(locationKey, locationName)
       },
         () => this.handleError('could not get weather forecast for your geo location.')
-      )
-  }
-
-  private getTelAvivForecast(): void {
-    const telAvivLocationKey = '215854';
-    this.apiService.getWeatherForecast(telAvivLocationKey)
-      .subscribe(forecast => {
-        this.fetchingForecast = false;
-        this.setDataBinding(forecast, 'Tel-Aviv', telAvivLocationKey);
-      },
-        () => this.handleError('failed fetching Tel Aviv forecast, try again.')
       )
   }
 
