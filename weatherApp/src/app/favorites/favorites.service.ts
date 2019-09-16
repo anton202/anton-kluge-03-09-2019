@@ -15,13 +15,15 @@ export class FavoritesService {
       })
   }
 
-  public checkIfFavorite(locationName: string): boolean {
-    for (let i = 0; i < this.favorites.length; i++) {
-      if (locationName === this.favorites[i].locationName) {
-        return true;
-      }
-    }
-    return false;
+  public checkIfFavorite(locationName: string) {
+    const result = this.favorites.filter(el => locationName === el.locationName);
+    return result.length > 0 ? true : false;
+  //   for (let i = 0; i < this.favorites.length; i++) {
+  //     if (locationName === this.favorites[i].locationName) {
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // }
   }
-
 }

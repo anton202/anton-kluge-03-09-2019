@@ -16,7 +16,7 @@ export function favoritesReducer(state = initialState, action) {
             return {
                 ...state,
                 favorites: state.favorites.filter((favoriteObj) => {
-                   return favoriteObj.name !== action.payload
+                   return favoriteObj.locationName !== action.payload
                 })
             }
         default:

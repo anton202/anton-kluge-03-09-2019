@@ -68,13 +68,17 @@ export class WeatherComponent implements OnInit {
       )
   }
 
-  public getWeather(): void {
+  public onSearchSumbit(): void {
     const locationName = this.searchForm.get('locationName').value;
-    const locationKey = this.apiService.getLocationKey(this.locationNameSuggestion, locationName)
+    const locationKey = this.apiService.getLocationKey(this.locationNameSuggestion, locationName).Key;
     if (!locationKey) {
       this.locationNameDoseNotExist = true;
       return
     }
+    this.getWeather(locationKey, locationName);
+  }
+
+  public getWeather(locationKey: string, locationName: string): void {
     this.fetchingForecast = true;
     this.locationNameDoseNotExist = false;
     this.apiService.getWeatherForecast(locationKey)
@@ -90,8 +94,9 @@ export class WeatherComponent implements OnInit {
   private defaultForecast() {
     this.fetchingForecast = true;
     const locationKey = this.route.snapshot.paramMap.get('locationKey');
+    const locationName = this.route.snapshot.paramMap.get('locationName');
     if (locationKey) {
-      return this.getFavoriteForecast(locationKey);
+      return this.getWeather(locationKey, locationName);
     }
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(this.getForecastByGeoLocation.bind(this), this.getTelAvivForecast.bind(this))
@@ -107,13 +112,7 @@ export class WeatherComponent implements OnInit {
         const locationName = locationInfo.LocalizedName;
         const locationKey = locationInfo.Key;
 
-        this.apiService.getWeatherForecast(locationInfo.Key)
-          .subscribe((forecast: any) => {
-            this.fetchingForecast = false;
-            this.setDataBinding(forecast, locationName, locationKey);
-          },
-            () => this.handleError('could not get weather forecast for your geo location.')
-          )
+        this.getWeather(locationKey, locationName)
       },
         () => this.handleError('could not get weather forecast for your geo location.')
       )
@@ -127,17 +126,6 @@ export class WeatherComponent implements OnInit {
         this.setDataBinding(forecast, 'Tel-Aviv', telAvivLocationKey);
       },
         () => this.handleError('failed fetching Tel Aviv forecast, try again.')
-      )
-  }
-
-  private getFavoriteForecast(locationKey: string): void {
-    this.apiService.getWeatherForecast(locationKey)
-      .subscribe(forecast => {
-        const locationName = this.route.snapshot.paramMap.get('locationName');
-        this.fetchingForecast = false;
-        this.setDataBinding(forecast, locationName);
-      },
-        () => this.handleError(`failed fetching forecast for ${this.route.snapshot.paramMap.get('locationName')}`)
       )
   }
 
