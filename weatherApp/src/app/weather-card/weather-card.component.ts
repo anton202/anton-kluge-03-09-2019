@@ -12,10 +12,10 @@ import { Weather } from '../weather/weather.model';
 export class WeatherCardComponent implements OnInit {
   @Input() public dailyForecast:{Date,Temperature,Day};
   @Input() public favoriteData:Weather;
-  public dayOfWeek: string;
-  public temperature: number;
-  public weatherIcon:string ;
-  public locationName: string
+  private dayOfWeek: string;
+  private temperature: number;
+  private weatherIcon:string ;
+  private locationName: string
   
 
   constructor(private weatherCardService: WeatherCardService, private router: Router) { }
@@ -32,7 +32,7 @@ export class WeatherCardComponent implements OnInit {
   }
 }
  
-public showFavoriteWeather(): void{
+private showFavoriteWeather(): void{
 if (this.favoriteData){
   this.router.navigate(['/weather',{locationKey:this.favoriteData.locationKey, locationName:this.favoriteData.locationName}])
 }

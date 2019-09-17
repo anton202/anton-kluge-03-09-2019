@@ -18,14 +18,14 @@ import { Weather } from './weather.model';
   styleUrls: ['./weather.component.css']
 })
 export class WeatherComponent implements OnInit {
-  public searchForm: FormGroup;
-  public locationNameSuggestion: Array<{ LocalizedName, Key }>;
-  public locationNameDoseNotExist: boolean;
-  public fetchingForecast: boolean = false;
-  public forecast: any[];
-  public weeklyWeatherStatus: string;
-  public isFavorite: boolean;
-  public weather: Weather;
+  private searchForm: FormGroup;
+  private locationNameSuggestion: Array<{ LocalizedName, Key }>;
+  private locationNameDoseNotExist: boolean;
+  private fetchingForecast: boolean = false;
+  private forecast: any[];
+  private weeklyWeatherStatus: string;
+  private isFavorite: boolean;
+  private weather: Weather;
   private telAvivLocationKey = '215854';
 
   constructor(
@@ -48,7 +48,7 @@ export class WeatherComponent implements OnInit {
     })
   }
 
-  public addToFavorites(): void {
+  private addToFavorites(): void {
     if (this.isFavorite) {
       this.store.dispatch(new FavoritesAction.RemoveFavorite(this.weather.locationName));
       this.isFavorite = false;
@@ -58,7 +58,7 @@ export class WeatherComponent implements OnInit {
     }
   }
 
-  public getLocationName(): void {
+  private getLocationName(): void {
     const locationName = this.searchForm.get('locationName').value;
 
     this.apiService.locationNameSuggestion(locationName)
@@ -69,7 +69,7 @@ export class WeatherComponent implements OnInit {
       )
   }
 
-  public onSearchSumbit(): void {
+  private onSearchSumbit(): void {
     const locationName = this.searchForm.get('locationName').value;
     const locationKey = this.apiService.getLocationKey(this.locationNameSuggestion, locationName).Key;
     if (!locationKey) {
