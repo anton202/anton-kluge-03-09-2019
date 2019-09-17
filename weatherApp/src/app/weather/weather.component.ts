@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { ApiService } from '../api/api.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
+
 
 import { WeatherCardService } from '../weather-card/weather-card.service';
 import * as FavoritesAction from '../favorites/store/favorites.action';
@@ -10,6 +11,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
 import { FavoritesService } from '../favorites/favorites.service';
 import { Weather } from './weather.model';
+import { Observable, fromEvent } from 'rxjs';
+import { map,debounceTime } from 'rxjs/operators';
 
 
 @Component({
@@ -17,7 +20,7 @@ import { Weather } from './weather.model';
   templateUrl: './weather.component.html',
   styleUrls: ['./weather.component.css']
 })
-export class WeatherComponent implements OnInit {
+export class WeatherComponent implements OnInit, AfterViewInit {
   private searchForm: FormGroup;
   private locationNameSuggestion: Array<{ LocalizedName, Key }>;
   private locationNameDoseNotExist: boolean;
@@ -27,6 +30,7 @@ export class WeatherComponent implements OnInit {
   private isFavorite: boolean;
   private weather: Weather;
   private telAvivLocationKey = '215854';
+   @ViewChild('search',{static:false}) searchInput:ElementRef;
 
   constructor(
     private apiService: ApiService,
@@ -40,6 +44,12 @@ export class WeatherComponent implements OnInit {
   ngOnInit() {
     this.searchFormItialization();
     this.defaultForecast();
+  }
+
+  ngAfterViewInit(){
+    console.log(this.searchInput)
+    fromEvent(this.searchInput.nativeElement,'keypress').pipe(map((el:any) => el.target.value),debounceTime(1000))
+      .subscribe(locationName =>this.getLocationName(locationName))
   }
 
   private searchFormItialization(): void {
@@ -58,9 +68,9 @@ export class WeatherComponent implements OnInit {
     }
   }
 
-  private getLocationName(): void {
-    const locationName = this.searchForm.get('locationName').value;
-
+  private getLocationName(locationName): void {
+    //const locationName = this.searchForm.get('locationName').value;
+    
     this.apiService.locationNameSuggestion(locationName)
       .subscribe(locationNames => {
         this.locationNameSuggestion = locationNames;

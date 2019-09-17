@@ -2,8 +2,8 @@
   <div class="search-city">
     <form [formGroup]="searchForm">
       <mat-form-field>
-        <input formControlName="locationName" type="text" matInput placeholder="Enter City Name"
-          (keypress)="getLocationName()" [matAutocomplete]="auto">
+        <input #search formControlName="locationName" type="text" matInput placeholder="Enter City Name"
+           [matAutocomplete]="auto">
 
         <mat-icon matSuffix (click)="getWeather()"><i class="material-icons">search</i></mat-icon>
         <mat-autocomplete #auto="matAutocomplete">
