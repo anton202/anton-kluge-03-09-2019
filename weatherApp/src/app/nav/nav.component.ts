@@ -10,19 +10,18 @@ import { ThemeService } from '../theme/theme.service';
   styleUrls: ['./nav.component.css']
 })
 export class NavComponent implements OnInit {
-  private isCelcius = true;
+  public isCelcius = true;
   constructor( private store: Store<appState>, private themeService: ThemeService) { }
 
   ngOnInit() {
   }
 
-  private changeTemperatureUnit(){
+  public changeTemperatureUnit(){
     this.isCelcius = this.isCelcius ? false : true;
     this.store.dispatch(new ChangeTemperatureUnit())
   }
 
- private changeTheme(): void{
-   console.log('test')
+ public changeTheme(): void{
     if (this.themeService.isDarkTheme()) {
       this.themeService.setLightTheme();
     } else {
