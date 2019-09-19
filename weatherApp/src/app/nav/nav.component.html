@@ -1,4 +1,11 @@
 <nav>
-  <a class="link" routerLink="/weather"><i class="material-icons">home</i>Home</a>
-  <a  class="link" routerLink="/favorites"><i class="material-icons">favorite</i>Favorites</a>
+  <span (click)="changeTheme()">Dark Mode</span>
+  <div>
+    <a class="link" routerLink="/weather"><i class="material-icons">home</i>Home</a>
+    <a class="link" routerLink="/favorites"><i class="material-icons">favorite</i>Favorites</a>
+  </div>
+  <div class="temerature-unit">
+    <span (click)="changeTemperatureUnit()" [ngClass]="{currentUnit:isCelcius}">C</span> | <span
+      (click)="changeTemperatureUnit()" [ngClass]="{currentUnit:!isCelcius}">F</span>
+  </div>
 </nav>

@@ -1,5 +1,5 @@
 <a (click)="showFavoriteWeather()"><div class="container">
     <img *ngIf="weatherIcon" [src]="weatherIcon" alt="weatherIcon">
     <span>{{dayOfWeek || locationName}}</span>
-    <span>{{temperature}}c</span>
+    <span>{{temperature}}{{temperatureUnit}}</span>
 </div></a>

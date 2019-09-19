@@ -1,9 +1,10 @@
 nav{
-    background-color: #0277bd;
+    background-color: var(--background-nav);
     height: 8vh;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: flex-end; 
+    color: white;
 }
 
 a:link, a:active, a:visited{
@@ -20,4 +21,14 @@ a:link, a:active, a:visited{
 
 .link i{
     vertical-align: -.1em;
+}
+
+span{
+    cursor: pointer;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.currentUnit{
+    color: orange;
 }

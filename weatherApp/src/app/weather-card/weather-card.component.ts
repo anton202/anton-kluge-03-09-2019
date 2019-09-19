@@ -2,7 +2,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { WeatherCardService } from './weather-card.service';
-import { Weather } from '../weather/weather.model';
+import { Weather } from '../models/weather.obj';
+import { Store } from '@ngrx/store';
+import { appState } from '../store/state/app.state';
 
 @Component({
   selector: 'app-weather-card',
@@ -10,32 +12,54 @@ import { Weather } from '../weather/weather.model';
   styleUrls: ['./weather-card.component.css']
 })
 export class WeatherCardComponent implements OnInit {
-  @Input() public dailyForecast:{Date,Temperature,Day};
-  @Input() public favoriteData:Weather;
+  @Input() public dailyForecast: { Date, Temperature, Day };
+  @Input() public favoriteData: Weather;
   private dayOfWeek: string;
   private temperature: number;
-  private weatherIcon:string ;
+  private weatherIcon: string;
   private locationName: string
-  
+  private temperatureUnit: string;
 
-  constructor(private weatherCardService: WeatherCardService, private router: Router) { }
+  constructor(private weatherCardService: WeatherCardService, private router: Router, private store: Store<appState>) { }
 
   ngOnInit() {
-    if(this.dailyForecast){
-    this.temperature = this.weatherCardService.convertToCelsius(this.dailyForecast.Temperature.Maximum.Value)
-    this.dayOfWeek = this.weatherCardService.getDayOfWeek(this.dailyForecast.Date)
-    this.weatherIcon= this.weatherCardService.setWeatherIcon(this.dailyForecast.Day.Icon)
-  }else{
-    this.temperature = this.favoriteData.temperature;
-    this.locationName = this.favoriteData.locationName
-    this.weatherIcon = this.favoriteData.weatherIcon;
+    this.store.select('temperatureUnit')
+      .subscribe(unit => {
+        this.temperatureUnit = unit.mesureUnit
+        this.dailyForecast ? this.setDailyForecast() : this.setFavoriteForecast();
+      })
   }
-}
- 
-private showFavoriteWeather(): void{
-if (this.favoriteData){
-  this.router.navigate(['/weather',{locationKey:this.favoriteData.locationKey, locationName:this.favoriteData.locationName}])
-}
-}
-  
+
+  private setDailyForecast(): void {
+    this.temperature = this.temperatureUnit === 'c' ?
+      this.weatherCardService.convertToCelsius(this.dailyForecast.Temperature.Maximum.Value) :
+      this.dailyForecast.Temperature.Maximum.Value;
+
+    this.dayOfWeek = this.weatherCardService.getDayOfWeek(this.dailyForecast.Date)
+    this.weatherIcon = this.weatherCardService.setWeatherIcon(this.dailyForecast.Day.Icon)
+  }
+
+  private setFavoriteForecast(): void {
+    this.locationName = this.favoriteData.locationName;
+    this.weatherIcon = this.favoriteData.weatherIcon;
+    if (this.temperatureUnit !== this.favoriteData.mesureUnit) {
+      switch (this.temperatureUnit) {
+        case 'c':
+          this.temperature = this.weatherCardService.convertToCelsius(this.favoriteData.temperature);
+
+        case 'f':
+          this.temperature = this.weatherCardService.convertToFahrenheit(this.favoriteData.temperature);
+
+      }
+    } else {
+      this.temperature = this.favoriteData.temperature;
+    }
+  }
+
+  private showFavoriteWeather(): void {
+    if (this.favoriteData) {
+      this.router.navigate(['/weather', { locationKey: this.favoriteData.locationKey, locationName: this.favoriteData.locationName }])
+    }
+  }
+
 }

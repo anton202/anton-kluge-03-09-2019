@@ -3,17 +3,16 @@ import { ApiService } from '../api/api.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-
+import { fromEvent } from 'rxjs';
+import { map, debounceTime } from 'rxjs/operators';
 
 import { WeatherCardService } from '../weather-card/weather-card.service';
-import * as FavoritesAction from '../favorites/store/favorites.action';
+import * as FavoritesAction from '../store/actions/favorites.action';
 import { MatDialog } from '@angular/material/dialog';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
 import { FavoritesService } from '../favorites/favorites.service';
-import { Weather } from './weather.model';
-import { Observable, fromEvent } from 'rxjs';
-import { map,debounceTime } from 'rxjs/operators';
-
+import { Weather } from '../models/weather.obj';
+import { appState } from '../store/state/app.state';
 
 @Component({
   selector: 'app-weather',
@@ -25,31 +24,40 @@ export class WeatherComponent implements OnInit, AfterViewInit {
   private locationNameSuggestion: Array<{ LocalizedName, Key }>;
   private locationNameDoseNotExist: boolean;
   private fetchingForecast: boolean = false;
-  private forecast: any[];
+  private forecast: any;
   private weeklyWeatherStatus: string;
   private isFavorite: boolean;
   private weather: Weather;
   private telAvivLocationKey = '215854';
-   @ViewChild('search',{static:false}) searchInput:ElementRef;
+  private temperatureUnit: string;
+  @ViewChild('search', { static: false }) searchInput: ElementRef;
 
   constructor(
     private apiService: ApiService,
     private route: ActivatedRoute,
     private weatherCardService: WeatherCardService,
-    private store: Store<{ favorites: { favorites } }>,
+    private store: Store<appState>,
     private dialog: MatDialog,
     private favoritesService: FavoritesService
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.searchFormItialization();
-    this.defaultForecast();
+    this.store.select('temperatureUnit')
+    .subscribe(unit =>{
+      this.temperatureUnit = unit.mesureUnit
+      this.defaultForecast();
+      // if(this.weather){
+      //   this.weather = {...this.weather,temperature:this.setTemperature(this.forecast)}
+      // }
+     
+    })
   }
 
-  ngAfterViewInit(){
-    console.log(this.searchInput)
-    fromEvent(this.searchInput.nativeElement,'keypress').pipe(map((el:any) => el.target.value),debounceTime(1000))
-      .subscribe(locationName =>this.getLocationName(locationName))
+  ngAfterViewInit() {
+    fromEvent(this.searchInput.nativeElement, 'keypress').pipe(map((el: any) => el.target.value), debounceTime(1000))
+      .subscribe(locationName => this.getLocationName(locationName))
+
   }
 
   private searchFormItialization(): void {
@@ -69,8 +77,6 @@ export class WeatherComponent implements OnInit, AfterViewInit {
   }
 
   private getLocationName(locationName): void {
-    //const locationName = this.searchForm.get('locationName').value;
-    
     this.apiService.locationNameSuggestion(locationName)
       .subscribe(locationNames => {
         this.locationNameSuggestion = locationNames;
@@ -110,7 +116,7 @@ export class WeatherComponent implements OnInit, AfterViewInit {
       return this.getWeather(locationKey, locationName);
     }
     if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(this.getForecastByGeoLocation.bind(this), this.getWeather.bind(this,this.telAvivLocationKey,'Tel-Aviv'))
+      navigator.geolocation.getCurrentPosition(this.getForecastByGeoLocation.bind(this), this.getWeather.bind(this, this.telAvivLocationKey, 'Tel-Aviv'))
     }
   }
 
@@ -129,16 +135,20 @@ export class WeatherComponent implements OnInit, AfterViewInit {
       )
   }
 
-  private setTemperature(forecastObj): number {
+  private setTemperatureToCelsius(forecastObj): number {
     return this.weatherCardService.convertToCelsius(forecastObj.DailyForecasts[0].Temperature.Maximum.Value);
+  }
+
+  private setTemperatureToFahrenheit(forecastObj): number{
+    return forecastObj.DailyForecasts[0].Temperature.Maximum.Value;
   }
 
   private setDataBinding(forecast: any, locationName: string, locationKey?: string): void {
     const weatherIcon = this.weatherCardService.setWeatherIcon(forecast.DailyForecasts[0].Day.Icon)
-    const temperature = this.setTemperature(forecast);
+    const temperature = this.temperatureUnit === 'c'? this.setTemperatureToCelsius(forecast) : this.setTemperatureToFahrenheit(forecast);
     this.weeklyWeatherStatus = forecast.Headline.Text;
-    this.forecast = forecast.DailyForecasts;
-    this.weather = new Weather(locationName, temperature, weatherIcon, locationKey);
+    this.forecast = forecast;
+    this.weather = new Weather(locationName, temperature, weatherIcon, this.temperatureUnit,locationKey);
   }
 
   private handleError(errorMessage: string): void {

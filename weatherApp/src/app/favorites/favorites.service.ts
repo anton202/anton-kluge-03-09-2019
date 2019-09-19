@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Weather } from '../weather/weather.model';
+import { Weather } from '../models/weather.obj';
+import { appState } from '../store/state/app.state';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,7 @@ import { Weather } from '../weather/weather.model';
 export class FavoritesService {
   public favorites: Array<Weather>;
 
-  constructor(private store: Store<{ favorites: { favorites } }>) {
+  constructor(private store: Store<appState>) {
     this.store.select('favorites')
       .subscribe(favorites => {
         this.favorites = favorites.favorites;

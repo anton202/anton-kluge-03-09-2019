@@ -1,10 +1,7 @@
-import * as FavoritesAction from './favorites.action';
+import * as FavoritesAction from '../actions/favorites.action';
+import { initialFavoritesState } from '../state/favorites.state';
 
-const initialState = {
-    favorites: []
-}
-
-export function favoritesReducer(state = initialState, action) {
+export function favoritesReducer(state = initialFavoritesState, action) {
     switch (action.type) {
         case FavoritesAction.ADD_TO_FAVORITES:
             return {
@@ -20,6 +17,6 @@ export function favoritesReducer(state = initialState, action) {
                 })
             }
         default:
-            return initialState;
+            return state;
     }
 }

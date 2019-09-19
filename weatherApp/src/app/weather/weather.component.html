@@ -2,8 +2,7 @@
   <div class="search-city">
     <form [formGroup]="searchForm">
       <mat-form-field>
-        <input #search formControlName="locationName" type="text" matInput placeholder="Enter City Name"
-           [matAutocomplete]="auto">
+        <input #search formControlName="locationName" type="text" matInput placeholder="Enter City Name" [matAutocomplete]="auto">
 
         <mat-icon matSuffix (click)="getWeather()"><i class="material-icons">search</i></mat-icon>
         <mat-autocomplete #auto="matAutocomplete">
@@ -23,7 +22,7 @@
       </div>
       <div class="city-degree">
         <span *ngIf="weather">{{weather.locationName}}</span>
-        <span *ngIf="weather">{{weather.temperature}}c</span>
+        <span *ngIf="weather">{{weather.temperature}}{{temperatureUnit}}</span>
       </div>
     </div>
     <div class="favorite">
@@ -40,6 +39,6 @@
       <span>{{weeklyWeatherStatus}}</span>
     </div>
   <div class="weather-days" *ngIf="!fetchingForecast">
-    <app-weather-card  *ngFor="let dailyForecast of forecast" [dailyForecast]="dailyForecast"></app-weather-card>
+    <app-weather-card  *ngFor="let dailyForecast of forecast.DailyForecasts" [dailyForecast]="dailyForecast"></app-weather-card>
   </div>
 </div>

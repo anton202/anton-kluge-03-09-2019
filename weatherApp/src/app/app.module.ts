@@ -12,8 +12,10 @@ import { NavComponent } from './nav/nav.component';
 import { WeatherComponent } from './weather/weather.component';
 import { WeatherCardComponent } from './weather-card/weather-card.component';
 import { FavoritesComponent } from './favorites/favorites.component';
-import { favoritesReducer } from './favorites/store/favorites.reducer';
+import { favoritesReducer } from './store/reducers/favorites.reducer';
 import { ErrorMessageComponent } from './error-message/error-message.component';
+import { temperatureUnitReducer } from './store/reducers/temperature-unit.reducer';
+import { appReducers } from './store/reducers/app.reducers';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,7 @@ import { ErrorMessageComponent } from './error-message/error-message.component';
     ReactiveFormsModule,
     HttpClientModule,
     MaterialModule,
-    StoreModule.forRoot({favorites: favoritesReducer})
+    StoreModule.forRoot(appReducers)
   ],
   entryComponents: [
     ErrorMessageComponent

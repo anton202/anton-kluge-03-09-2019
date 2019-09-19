@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store'
-import { Weather } from '../../weather/weather.model';
+import { Weather } from '../../models/weather.obj';
 
 export const ADD_TO_FAVORITES = 'ADD_TO_FAVORITES';
 export const REMOVE_FAVORITE = 'REMOVE_FAVORITE';
