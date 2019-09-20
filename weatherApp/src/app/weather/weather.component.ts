@@ -41,12 +41,13 @@ export class WeatherComponent implements OnInit, AfterViewInit {
     private favoritesService: FavoritesService
   ) { }
 
-   ngOnInit() {
+  ngOnInit() {
     this.searchFormItialization();
+    this.defaultForecast();
+    
     this.store.select('temperatureUnit')
-    .subscribe(unit =>{
-      this.temperatureUnit = unit.mesureUnit
-      this.defaultForecast();
+    .subscribe(unit => {
+      this.temperatureUnit = unit.mesureUnit 
     })
   }
 
@@ -134,16 +135,16 @@ export class WeatherComponent implements OnInit, AfterViewInit {
     return this.weatherCardService.convertToCelsius(forecastObj.DailyForecasts[0].Temperature.Maximum.Value);
   }
 
-  private setTemperatureToFahrenheit(forecastObj): number{
+  private setTemperatureToFahrenheit(forecastObj): number {
     return forecastObj.DailyForecasts[0].Temperature.Maximum.Value;
   }
 
   private setDataBinding(forecast: any, locationName: string, locationKey?: string): void {
     const weatherIcon = this.weatherCardService.setWeatherIcon(forecast.DailyForecasts[0].Day.Icon)
-    const temperature = this.temperatureUnit === 'c'? this.setTemperatureToCelsius(forecast) : this.setTemperatureToFahrenheit(forecast);
+    const temperature = this.temperatureUnit === 'c' ? this.setTemperatureToCelsius(forecast) : this.setTemperatureToFahrenheit(forecast);
     this.weeklyWeatherStatus = forecast.Headline.Text;
     this.forecast = forecast;
-    this.weather = new Weather(locationName, temperature, weatherIcon, this.temperatureUnit,locationKey);
+    this.weather = new Weather(locationName, temperature, weatherIcon, this.temperatureUnit, locationKey);
   }
 
   private handleError(errorMessage: string): void {

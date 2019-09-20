@@ -6,8 +6,8 @@ export interface Theme {
 export const light: Theme = {
     name: "light",
     properties: {
-        "--background-primary": "0e0e0",
-        "--background-secondery": "fafafa",
+        "--background-primary": "#e0e0e0",
+        "--background-secondery": "#fafafa",
         "--background-tertiary": "#f5f5f5",
         "--background-nav": "#0277bd",
         "--font-color":"black"

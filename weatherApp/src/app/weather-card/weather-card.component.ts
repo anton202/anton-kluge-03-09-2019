@@ -46,10 +46,11 @@ export class WeatherCardComponent implements OnInit {
       switch (this.temperatureUnit) {
         case 'c':
           this.temperature = this.weatherCardService.convertToCelsius(this.favoriteData.temperature);
+          return;
 
         case 'f':
           this.temperature = this.weatherCardService.convertToFahrenheit(this.favoriteData.temperature);
-
+          return;
       }
     } else {
       this.temperature = this.favoriteData.temperature;
