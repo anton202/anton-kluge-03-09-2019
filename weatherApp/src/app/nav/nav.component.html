@@ -5,7 +5,7 @@
     <a class="link" routerLink="/favorites"><i class="material-icons">favorite</i>Favorites</a>
   </div>
   <div class="temerature-unit">
-    <span (click)="changeTemperatureUnit()" [ngClass]="{currentUnit:isCelcius}">C</span> | <span
-      (click)="changeTemperatureUnit()" [ngClass]="{currentUnit:!isCelcius}">F</span>
+    <span (click)="changeTemperatureUnit()" [ngClass]="{currentUnit:tempUnit === 'c'}">C</span> |  
+    <span (click)="changeTemperatureUnit()" [ngClass]="{currentUnit:tempUnit === 'f'}">F</span>
   </div>
 </nav>

@@ -9,14 +9,17 @@ import { appState } from '../store/state/app.state';
   styleUrls: ['./nav.component.css']
 })
 export class NavComponent implements OnInit {
-   isCelcius: boolean = true;
+   tempUnit:string;
   constructor( private store: Store<appState>) { }
 
   ngOnInit() {
+    this.store.select('temperatureUnit')
+      .subscribe(unit =>{
+        this.tempUnit = unit.mesureUnit;
+      })
   }
 
    changeTemperatureUnit(): void{
-    this.isCelcius = this.isCelcius ? false : true;
     this.store.dispatch(new ChangeTemperatureUnit())
   }
 
