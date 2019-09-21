@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { appState } from '../store/state/app.state';
 import { temepratureUnitState } from '../store/state/temeprature-unit.state';
+import { temperatureUnitReducer } from '../store/reducers/temperature-unit.reducer';
 
 
 @Injectable({
@@ -23,6 +24,14 @@ export class WeatherCardService {
 
     public convertToFahrenheit(temperature: number): number{
         return Math.floor((temperature * 9 / 5) + 32);
+    }
+
+    public convertTemeprature(temeprature: number, unit: string): number{
+        if(unit === 'c'){
+            return this.convertToCelsius(temeprature);
+        }else{
+            return temeprature;
+        }
     }
 
     public setWeatherIcon(iconNumber: number): string {

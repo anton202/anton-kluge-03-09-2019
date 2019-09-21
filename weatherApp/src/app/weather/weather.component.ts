@@ -48,6 +48,10 @@ export class WeatherComponent implements OnInit, AfterViewInit {
     this.store.select('temperatureUnit')
     .subscribe(unit => {
       this.temperatureUnit = unit.mesureUnit 
+      if(this.weather){
+        this.weather.temperature = this.weatherCardService.convertTemeprature(this.forecast.DailyForecasts[0].Temperature.Maximum.Value, unit.mesureUnit);
+        this.weather.mesureUnit = unit.mesureUnit;
+      }
     })
   }
 

@@ -14,6 +14,7 @@ import { appState } from '../store/state/app.state';
 export class WeatherCardComponent implements OnInit {
   @Input() public dailyForecast: { Date, Temperature, Day };
   @Input() public favoriteData: Weather;
+  public weather: Weather;
   public dayOfWeek: string;
   public temperature: number;
   public weatherIcon: string;
@@ -43,15 +44,7 @@ export class WeatherCardComponent implements OnInit {
     this.locationName = this.favoriteData.locationName;
     this.weatherIcon = this.favoriteData.weatherIcon;
     if (this.temperatureUnit !== this.favoriteData.mesureUnit) {
-      switch (this.temperatureUnit) {
-        case 'c':
-          this.temperature = this.weatherCardService.convertToCelsius(this.favoriteData.temperature);
-          return;
-
-        case 'f':
-          this.temperature = this.weatherCardService.convertToFahrenheit(this.favoriteData.temperature);
-          return;
-      }
+      this.temperature = this.weatherCardService.convertTemeprature(this.favoriteData.temperature, this.temperatureUnit)
     } else {
       this.temperature = this.favoriteData.temperature;
     }
