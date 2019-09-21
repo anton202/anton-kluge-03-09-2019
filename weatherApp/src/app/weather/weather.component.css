@@ -104,6 +104,14 @@ app-weather-card{
 }
 
 @media (max-width: 640px) {
+  .container{
+    top: 5%;
+    left: 5%;
+    height: 90%;
+    width: 90%;
+
+  }
+
   .weather-days{
     flex-direction: column;
     height: 60%;
@@ -129,7 +137,11 @@ app-weather-card{
   }
 
   .weeklyWeatherStatus{
-    font-size: 1.5rem;
+    font-size: 1.7rem;
+    text-align: center;
+    width: 80%;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
   }
 
   app-weather-card{

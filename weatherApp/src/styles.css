@@ -5,10 +5,6 @@
   --background-secondery:#fafafa;
   --background-tertiary: #f5f5f5;
   --background-nav: #0277bd;
-
-  /* --background-dark: #000a12;
-  --background-dark-secondery:#263238;
-  --background-dark-tertiary:#4f5b62; */
 }
 
 * {
@@ -28,13 +24,8 @@ body {
 
 @media (max-width: 640px) {
   html {
-    font-size: 50%;
+    font-size: 45%;
   }
 }
 
-/* dark mode colors
-  nav: c
-  app.component.html - main: #263238
-  weahter.component: #4f5b62
-  weather-card: #4f5b62
-  */
+

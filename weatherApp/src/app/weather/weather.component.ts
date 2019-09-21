@@ -44,19 +44,21 @@ export class WeatherComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.searchFormItialization();
     this.defaultForecast();
-    
+
     this.store.select('temperatureUnit')
-    .subscribe(unit => {
-      this.temperatureUnit = unit.mesureUnit 
-      if(this.weather){
-        this.weather.temperature = this.weatherCardService.convertTemeprature(this.forecast.DailyForecasts[0].Temperature.Maximum.Value, unit.mesureUnit);
-        this.weather.mesureUnit = unit.mesureUnit;
-      }
-    })
+      .subscribe(unit => {
+        this.temperatureUnit = unit.mesureUnit
+        if (this.weather) {
+          const temperature = this.forecast.DailyForecasts[0].Temperature.Maximum.Value;
+          this.weather.temperature = this.weatherCardService.convertTemeprature(temperature, unit.mesureUnit);
+          this.weather.mesureUnit = unit.mesureUnit;
+        }
+      })
   }
 
   ngAfterViewInit() {
-    fromEvent(this.searchInput.nativeElement, 'keypress').pipe(map((el: any) => el.target.value), debounceTime(1000))
+    fromEvent(this.searchInput.nativeElement, 'keypress')
+      .pipe(map((el: any) => el.target.value), debounceTime(1000))
       .subscribe(locationName => this.getLocationName(locationName))
   }
 
