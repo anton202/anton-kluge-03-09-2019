@@ -20,16 +20,16 @@ import { appState } from '../store/state/app.state';
   styleUrls: ['./weather.component.css']
 })
 export class WeatherComponent implements OnInit, AfterViewInit {
-  public searchForm: FormGroup;
-  public locationNameSuggestion: Array<{ LocalizedName, Key }>;
-  public locationNameDoseNotExist: boolean;
-  public fetchingForecast: boolean = false;
-  public forecast: any;
-  public isFavorite: boolean;
-  public weeklyWeatherStatus: string;
-  public weather: Weather;
   private telAvivLocationKey = '215854';
-  public temperatureUnit: string;
+  searchForm: FormGroup;
+  locationNameSuggestion: Array<{ LocalizedName, Key }>;
+  locationNameDoseNotExist: boolean;
+  fetchingForecast: boolean = false;
+  forecast: any;
+  isFavorite: boolean;
+  weeklyWeatherStatus: string;
+  weather: Weather;
+  temperatureUnit: string;
   @ViewChild('search', { static: false }) searchInput: ElementRef;
 
   constructor(
@@ -68,7 +68,7 @@ export class WeatherComponent implements OnInit, AfterViewInit {
     })
   }
 
-  public addToFavorites(): void {
+   addToFavorites(): void {
     if (this.isFavorite) {
       this.store.dispatch(new FavoritesAction.RemoveFavorite(this.weather.locationName));
       this.isFavorite = false;
@@ -87,7 +87,7 @@ export class WeatherComponent implements OnInit, AfterViewInit {
       )
   }
 
-  public onSearchSumbit(): void {
+   onSearchSumbit(): void {
     const locationName = this.searchForm.get('locationName').value;
     const locationKey = this.apiService.getLocationKey(this.locationNameSuggestion, locationName).Key;
     if (!locationKey) {
@@ -97,7 +97,7 @@ export class WeatherComponent implements OnInit, AfterViewInit {
     this.getWeather(locationKey, locationName);
   }
 
-  public getWeather(locationKey?: string, locationName?: string): void {
+   getWeather(locationKey?: string, locationName?: string): void {
     this.fetchingForecast = true;
     this.locationNameDoseNotExist = false;
     this.apiService.getWeatherForecast(locationKey)

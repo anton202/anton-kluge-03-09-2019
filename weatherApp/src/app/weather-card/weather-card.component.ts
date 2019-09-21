@@ -12,10 +12,10 @@ import { appState } from '../store/state/app.state';
   styleUrls: ['./weather-card.component.css']
 })
 export class WeatherCardComponent implements OnInit {
-  @Input() public dailyForecast: { Date, Temperature, Day };
-  @Input() public favoriteData: Weather;
-  public weather: DailyWeather;
-  public temperatureUnit: string;
+  @Input() dailyForecast: { Date, Temperature, Day };
+  @Input() favoriteData: Weather;
+  weather: DailyWeather;
+  temperatureUnit: string;
 
   constructor(private weatherCardService: WeatherCardService, private router: Router, private store: Store<appState>) { }
 
@@ -48,7 +48,7 @@ export class WeatherCardComponent implements OnInit {
     }
   }
 
-  public showFavoriteWeather(): void {
+  showFavoriteWeather(): void {
     if (this.favoriteData) {
       this.router.navigate(['/weather', { locationKey: this.favoriteData.locationKey, locationName: this.favoriteData.locationName }])
     }

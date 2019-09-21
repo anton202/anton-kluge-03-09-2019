@@ -1,13 +1,21 @@
-import { Injectable } from '@angular/core';
-import { Theme, light, dark } from "./theme";
+import { Directive, HostListener, Renderer2, ElementRef } from '@angular/core';
+import { light, Theme, dark } from './theme';
 
-@Injectable({
-  providedIn: 'root'
+@Directive({
+  selector: '[appTheme]'
 })
-export class ThemeService {
+export class ThemeDirective {
+
   private active: Theme = light;
- 
   constructor() { }
+  
+  @HostListener('click') toggleTheme(){
+    if (this.isDarkTheme()) {
+      this.setLightTheme();
+    } else {
+      this.setDarkTheme();
+    }
+  }
 
   isDarkTheme(): boolean {
     return this.active.name === dark.name;
@@ -25,12 +33,12 @@ export class ThemeService {
     this.active = theme;
 
     Object.keys(this.active.properties).forEach(property => {
-      document.documentElement.style.setProperty(
+        document.documentElement.style.setProperty(
         property,
         this.active.properties[property]
       );
     });
+    
   }
 
 }
-

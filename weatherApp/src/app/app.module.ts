@@ -16,6 +16,7 @@ import { favoritesReducer } from './store/reducers/favorites.reducer';
 import { ErrorMessageComponent } from './error-message/error-message.component';
 import { temperatureUnitReducer } from './store/reducers/temperature-unit.reducer';
 import { appReducers } from './store/reducers/app.reducers';
+import { ThemeDirective } from './theme/theme.directive';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { appReducers } from './store/reducers/app.reducers';
     WeatherComponent,
     WeatherCardComponent,
     FavoritesComponent,
-    ErrorMessageComponent
+    ErrorMessageComponent,
+    ThemeDirective
   ],
   imports: [
     BrowserModule,

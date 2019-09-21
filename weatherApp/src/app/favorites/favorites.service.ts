@@ -7,7 +7,7 @@ import { appState } from '../store/state/app.state';
   providedIn: 'root'
 })
 export class FavoritesService {
-  public favorites: Array<Weather>;
+  favorites: Array<Weather>;
 
   constructor(private store: Store<appState>) {
     this.store.select('favorites')
@@ -16,7 +16,7 @@ export class FavoritesService {
       })
   }
 
-  public checkIfFavorite(locationName: string) {
+  checkIfFavorite(locationName: string) {
     const result = this.favorites.filter(el => locationName === el.locationName);
     return result.length > 0 ? true : false;
   }

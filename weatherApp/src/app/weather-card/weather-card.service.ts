@@ -3,30 +3,31 @@ import { Store } from '@ngrx/store';
 import { appState } from '../store/state/app.state';
 import { temepratureUnitState } from '../store/state/temeprature-unit.state';
 import { temperatureUnitReducer } from '../store/reducers/temperature-unit.reducer';
+import { ArrayDataSource } from '@angular/cdk/collections';
 
 
 @Injectable({
     providedIn: 'root'
 })
 export class WeatherCardService {
-    public daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wedensday', 'Thursday', 'Friday', 'Saturday'];
+     daysOfWeek:Array<string> = ['Sunday', 'Monday', 'Tuesday', 'Wedensday', 'Thursday', 'Friday', 'Saturday'];
     
     constructor() {}
 
-    public getDayOfWeek(date: string): string {
+     getDayOfWeek(date: string): string {
         const getDate = new Date(date).getDay();
         return this.daysOfWeek[getDate];
     }
 
-    public convertToCelsius(temperature: number): number {
+     convertToCelsius(temperature: number): number {
             return Math.floor((temperature - 32) * 5 / 9);
     }
 
-    public convertToFahrenheit(temperature: number): number{
+     convertToFahrenheit(temperature: number): number{
         return Math.floor((temperature * 9 / 5) + 32);
     }
 
-    public convertTemeprature(temeprature: number, unit: string): number{
+     convertTemeprature(temeprature: number, unit: string): number{
         if(unit === 'c'){
             return this.convertToCelsius(temeprature);
         }else{
@@ -34,7 +35,7 @@ export class WeatherCardService {
         }
     }
 
-    public setWeatherIcon(iconNumber: number): string {
+     setWeatherIcon(iconNumber: number): string {
         if (iconNumber < 10) {
           return `https://developer.accuweather.com/sites/default/files/${'0' + iconNumber}-s.png`
         }
