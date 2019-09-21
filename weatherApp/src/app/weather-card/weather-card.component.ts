@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { WeatherCardService } from './weather-card.service';
-import { Weather } from '../models/weather.obj';
+import { Weather, DailyWeather } from '../models/weather.obj';
 import { Store } from '@ngrx/store';
 import { appState } from '../store/state/app.state';
 
@@ -14,11 +14,7 @@ import { appState } from '../store/state/app.state';
 export class WeatherCardComponent implements OnInit {
   @Input() public dailyForecast: { Date, Temperature, Day };
   @Input() public favoriteData: Weather;
-  public weather: Weather;
-  public dayOfWeek: string;
-  public temperature: number;
-  public weatherIcon: string;
-  public locationName: string
+  public weather: DailyWeather;
   public temperatureUnit: string;
 
   constructor(private weatherCardService: WeatherCardService, private router: Router, private store: Store<appState>) { }
@@ -32,21 +28,23 @@ export class WeatherCardComponent implements OnInit {
   }
 
   private setDailyForecast(): void {
-    this.temperature = this.temperatureUnit === 'c' ?
-      this.weatherCardService.convertToCelsius(this.dailyForecast.Temperature.Maximum.Value) :
-      this.dailyForecast.Temperature.Maximum.Value;
+    let temperature;
+    if (this.temperatureUnit === 'c') {
+      temperature = this.weatherCardService.convertToCelsius(this.dailyForecast.Temperature.Maximum.Value);
+    } else {
+      temperature = this.dailyForecast.Temperature.Maximum.Value;
+    }
+    const dayOfWeek = this.weatherCardService.getDayOfWeek(this.dailyForecast.Date)
+    const weatherIcon = this.weatherCardService.setWeatherIcon(this.dailyForecast.Day.Icon)
 
-    this.dayOfWeek = this.weatherCardService.getDayOfWeek(this.dailyForecast.Date)
-    this.weatherIcon = this.weatherCardService.setWeatherIcon(this.dailyForecast.Day.Icon)
+    this.weather = new DailyWeather(temperature, weatherIcon, dayOfWeek)
   }
 
   private setFavoriteForecast(): void {
-    this.locationName = this.favoriteData.locationName;
-    this.weatherIcon = this.favoriteData.weatherIcon;
     if (this.temperatureUnit !== this.favoriteData.mesureUnit) {
-      this.temperature = this.weatherCardService.convertTemeprature(this.favoriteData.temperature, this.temperatureUnit)
+      this.favoriteData.temperature = this.weatherCardService.convertTemeprature(this.favoriteData.temperature, this.temperatureUnit)
     } else {
-      this.temperature = this.favoriteData.temperature;
+      this.favoriteData.temperature = this.favoriteData.temperature;
     }
   }
 

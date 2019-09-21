@@ -7,3 +7,11 @@ export class Weather {
         public locationKey?: string,
     ) { }
 }
+
+export class DailyWeather {
+    constructor(
+        public temperature: number,
+        public weatherIcon: string,
+        public dayOfWeek: string
+        ) { }
+}
