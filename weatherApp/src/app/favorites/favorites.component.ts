@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FavoritesService } from './favorites.service';
+import { Store } from '@ngrx/store';
+import { appState } from '../store/state/app.state';
+import { WeatherService } from '../weather/weather.service';
+import { Weather } from '../models/weather.obj';
 
 @Component({
   selector: 'app-favorites',
@@ -7,12 +11,18 @@ import { FavoritesService } from './favorites.service';
   styleUrls: ['./favorites.component.css']
 })
 export class FavoritesComponent implements OnInit {
-  favorites:Array<{}>;
+  favorites: Array<Weather>;
 
-  constructor(private favoritesService: FavoritesService) { }
+  constructor(private store: Store<appState>, private weatherService: WeatherService) { }
 
   ngOnInit() {
-    this.favorites = this.favoritesService.favorites;
+    this.store.select('temperatureUnit')
+      .subscribe((mesureUnit) =>{
+        this.store.select('favorites')
+          .subscribe(favorites =>{
+            this.favorites = this.weatherService.changeTemperature(favorites.favorites,mesureUnit.mesureUnit);
+          })
+      })
   }
 
 }

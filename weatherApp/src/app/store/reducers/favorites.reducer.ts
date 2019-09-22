@@ -4,7 +4,6 @@ import { initialFavoritesState } from '../state/favorites.state';
 export function favoritesReducer(state = initialFavoritesState, action) {
     switch (action.type) {
         case FavoritesAction.ADD_TO_FAVORITES:
-            console.log(state)
             return {
                 ...state,
                 favorites: [...state.favorites, action.payload]

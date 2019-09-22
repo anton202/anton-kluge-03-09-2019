@@ -7,17 +7,10 @@ import { appState } from '../store/state/app.state';
   providedIn: 'root'
 })
 export class FavoritesService {
-  favorites: Array<Weather>;
+  constructor() {}
 
-  constructor(private store: Store<appState>) {
-    this.store.select('favorites')
-      .subscribe(favorites => {
-        this.favorites = favorites.favorites;
-      })
-  }
-
-  checkIfFavorite(locationName: string) {
-    const result = this.favorites.filter(el => locationName === el.locationName);
-    return result.length > 0 ? true : false;
-  }
+  // checkIfFavorite(locationName: string) {
+  //   const result = this.favorites.filter(el => locationName === el.locationName);
+  //   return result.length > 0 ? true : false;
+  // }
 }

@@ -1,5 +1,5 @@
 <div class="container">
     <div class="favorites">
-      <app-weather-card *ngFor="let favorite of favorites" [favoriteLocationForecast]="favorite"></app-weather-card>
+      <app-weather-card *ngFor="let favorite of favorites" [weather]="favorite" [isFavotire]="true"></app-weather-card>
     </div>
 </div>

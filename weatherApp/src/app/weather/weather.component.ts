@@ -6,13 +6,13 @@ import { Store } from '@ngrx/store';
 import { fromEvent } from 'rxjs';
 import { map, debounceTime } from 'rxjs/operators';
 
-import { WeatherCardService } from '../weather-card/weather-card.service';
 import * as FavoritesAction from '../store/actions/favorites.action';
 import { MatDialog } from '@angular/material/dialog';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
 import { FavoritesService } from '../favorites/favorites.service';
 import { Weather } from '../models/weather.obj';
 import { appState } from '../store/state/app.state';
+import { WeatherService } from './weather.service';
 
 @Component({
   selector: 'app-weather',
@@ -35,10 +35,10 @@ export class WeatherComponent implements OnInit, AfterViewInit {
   constructor(
     private apiService: ApiService,
     private route: ActivatedRoute,
-    private weatherCardService: WeatherCardService,
     private store: Store<appState>,
     private dialog: MatDialog,
-    private favoritesService: FavoritesService
+    private favoritesService: FavoritesService,
+    private weatherService: WeatherService
   ) { }
 
   ngOnInit() {
@@ -48,10 +48,9 @@ export class WeatherComponent implements OnInit, AfterViewInit {
     this.store.select('temperatureUnit')
       .subscribe(unit => {
         this.temperatureUnit = unit.mesureUnit
-        if (this.weather) {
-          const temperature = this.forecast.DailyForecasts[0].Temperature.Maximum.Value;
-          this.weather.temperature = this.weatherCardService.convertTemeprature(temperature, unit.mesureUnit);
-          this.weather.mesureUnit = unit.mesureUnit;
+        if(this.forecast){
+        this.forecast = this.weatherService.changeTemperature(this.forecast,this.temperatureUnit);
+        
         }
       })
   }
@@ -70,11 +69,11 @@ export class WeatherComponent implements OnInit, AfterViewInit {
 
    addToFavorites(): void {
     if (this.isFavorite) {
-      this.store.dispatch(new FavoritesAction.RemoveFavorite(this.weather.locationName));
+      this.store.dispatch(new FavoritesAction.RemoveFavorite(this.forecast[0].locationName));
       this.isFavorite = false;
     } else {
       this.isFavorite = true;
-      this.store.dispatch(new FavoritesAction.AddToFavorites(this.weather))
+      this.store.dispatch(new FavoritesAction.AddToFavorites(this.forecast[0]))
     }
   }
 
@@ -102,8 +101,9 @@ export class WeatherComponent implements OnInit, AfterViewInit {
     this.locationNameDoseNotExist = false;
     this.apiService.getWeatherForecast(locationKey)
       .subscribe(forecast => {
+      
         this.fetchingForecast = false;
-        this.isFavorite = this.favoritesService.checkIfFavorite(locationName);
+        //this.isFavorite = this.favoritesService.checkIfFavorite(locationName);
         this.setDataBinding(forecast, locationName, locationKey);
       },
         () => this.handleError('something went wrong while fetchong the forecast, please try again')
@@ -130,27 +130,16 @@ export class WeatherComponent implements OnInit, AfterViewInit {
       .subscribe((locationInfo: { LocalizedName, Key }) => {
         const locationName = locationInfo.LocalizedName;
         const locationKey = locationInfo.Key;
-
+       
         this.getWeather(locationKey, locationName)
       },
         () => this.handleError('could not get weather forecast for your geo location.')
       )
-  }
-
-  private setTemperatureToCelsius(forecastObj): number {
-    return this.weatherCardService.convertToCelsius(forecastObj.DailyForecasts[0].Temperature.Maximum.Value);
-  }
-
-  private setTemperatureToFahrenheit(forecastObj): number {
-    return forecastObj.DailyForecasts[0].Temperature.Maximum.Value;
-  }
+  }   
 
   private setDataBinding(forecast: any, locationName: string, locationKey?: string): void {
-    const weatherIcon = this.weatherCardService.setWeatherIcon(forecast.DailyForecasts[0].Day.Icon)
-    const temperature = this.temperatureUnit === 'c' ? this.setTemperatureToCelsius(forecast) : this.setTemperatureToFahrenheit(forecast);
     this.weeklyWeatherStatus = forecast.Headline.Text;
-    this.forecast = forecast;
-    this.weather = new Weather(locationName, temperature, weatherIcon, this.temperatureUnit, locationKey);
+    this.forecast = this.weatherService.setWeather(forecast.DailyForecasts, this.temperatureUnit,locationName,locationKey);
   }
 
   private handleError(errorMessage: string): void {
