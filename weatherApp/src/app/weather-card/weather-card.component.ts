@@ -13,7 +13,7 @@ import { appState } from '../store/state/app.state';
 })
 export class WeatherCardComponent implements OnInit {
   @Input() dailyForecast: { Date, Temperature, Day };
-  @Input() favoriteData: Weather;
+  @Input() favoriteLocationForecast: Weather;
   weather: DailyWeather;
   temperatureUnit: string;
 
@@ -41,16 +41,16 @@ export class WeatherCardComponent implements OnInit {
   }
 
   private setFavoriteForecast(): void {
-    if (this.temperatureUnit !== this.favoriteData.mesureUnit) {
-      this.favoriteData.temperature = this.weatherCardService.convertTemeprature(this.favoriteData.temperature, this.temperatureUnit)
+    if (this.temperatureUnit !== this.favoriteLocationForecast.mesureUnit) {
+      this.favoriteLocationForecast.temperature = this.weatherCardService.convertTemeprature(this.favoriteLocationForecast.temperature, this.temperatureUnit)
     } else {
-      this.favoriteData.temperature = this.favoriteData.temperature;
+      this.favoriteLocationForecast.temperature = this.favoriteLocationForecast.temperature;
     }
   }
 
   showFavoriteWeather(): void {
-    if (this.favoriteData) {
-      this.router.navigate(['/weather', { locationKey: this.favoriteData.locationKey, locationName: this.favoriteData.locationName }])
+    if (this.favoriteLocationForecast) {
+      this.router.navigate(['/weather', { locationKey: this.favoriteLocationForecast.locationKey, locationName: this.favoriteLocationForecast.locationName }])
     }
   }
 

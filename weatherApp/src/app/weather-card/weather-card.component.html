@@ -1,10 +1,10 @@
 <a (click)="showFavoriteWeather()"><div class="container">
-    <img *ngIf=favoriteData [src]="favoriteData.weatherIcon" alt="weatherIcon">
+    <img *ngIf=favoriteLocationForecast [src]="favoriteLocationForecast.weatherIcon" alt="weatherIcon">
     <img *ngIf=weather [src]="weather.weatherIcon" alt="weatherIcon">
     
     <span *ngIf="weather">{{weather.dayOfWeek}}</span>
-    <span *ngIf="favoriteData">{{favoriteData.locationName}}</span>
+    <span *ngIf="favoriteLocationForecast">{{favoriteLocationForecast.locationName}}</span>
     <span *ngIf="weather">{{weather.temperature}}{{temperatureUnit}}</span>
-    <span *ngIf="favoriteData">{{favoriteData.temperature}}{{temperatureUnit}}</span>
+    <span *ngIf="favoriteLocationForecast">{{favoriteLocationForecast.temperature}}{{temperatureUnit}}</span>
     
 </div></a>
