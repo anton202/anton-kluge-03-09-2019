@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FavoritesService } from './favorites.service';
 import { Store } from '@ngrx/store';
 import { appState } from '../store/state/app.state';
 import { WeatherService } from '../weather/weather.service';

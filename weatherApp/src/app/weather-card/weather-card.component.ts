@@ -13,7 +13,7 @@ export class WeatherCardComponent implements OnInit {
 
   constructor(private router: Router) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   showFavoriteWeather(): void {
     if (this.isFavotire) {

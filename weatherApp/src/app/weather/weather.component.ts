@@ -9,7 +9,6 @@ import { map, debounceTime } from 'rxjs/operators';
 import * as FavoritesAction from '../store/actions/favorites.action';
 import { MatDialog } from '@angular/material/dialog';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
-import { FavoritesService } from '../favorites/favorites.service';
 import { Weather } from '../models/weather.obj';
 import { appState } from '../store/state/app.state';
 import { WeatherService } from './weather.service';
@@ -37,7 +36,6 @@ export class WeatherComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private store: Store<appState>,
     private dialog: MatDialog,
-    private favoritesService: FavoritesService,
     private weatherService: WeatherService
   ) { }
 
@@ -50,7 +48,6 @@ export class WeatherComponent implements OnInit, AfterViewInit {
         this.temperatureUnit = unit.mesureUnit
         if(this.forecast){
         this.forecast = this.weatherService.changeTemperature(this.forecast,this.temperatureUnit);
-        
         }
       })
   }
@@ -103,7 +100,7 @@ export class WeatherComponent implements OnInit, AfterViewInit {
       .subscribe(forecast => {
       
         this.fetchingForecast = false;
-        //this.isFavorite = this.favoritesService.checkIfFavorite(locationName);
+        this.isFavorite = this.weatherService.checkIfFavorite(locationName);
         this.setDataBinding(forecast, locationName, locationKey);
       },
         () => this.handleError('something went wrong while fetchong the forecast, please try again')

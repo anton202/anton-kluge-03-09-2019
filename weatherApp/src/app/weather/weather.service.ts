@@ -1,12 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Weather } from '../models/weather.obj';
+import { Store } from '@ngrx/store';
+import { appState } from '../store/state/app.state';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WeatherService {
-  daysOfWeek:Array<string> = ['Sunday', 'Monday', 'Tuesday', 'Wedensday', 'Thursday', 'Friday', 'Saturday'];
-  constructor() { }
+  daysOfWeek:string[] = ['Sunday', 'Monday', 'Tuesday', 'Wedensday', 'Thursday', 'Friday', 'Saturday'];
+  private favorites:Weather[];
+
+  constructor(private store: Store<appState>) {
+    this.store.select('favorites')
+          .subscribe(favorites =>{
+            this.favorites = favorites.favorites;
+          })
+   }
 
   setWeather(forecast: any, mesureUnit: string, locationName:string, locationKey: string): Weather[] {
     return forecast.map(el => {
@@ -36,6 +45,11 @@ export class WeatherService {
     }else{
       return this.convertToFahrenheit(temperature);
     }
+  }
+
+  checkIfFavorite(locationName: string) {
+    const result = this.favorites.filter(el => locationName === el.locationName);
+    return result.length > 0 ? true : false;
   }
 
   convertToCelsius(temperature: number): number {
