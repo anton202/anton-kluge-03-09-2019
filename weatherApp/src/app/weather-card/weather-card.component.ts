@@ -21,8 +21,5 @@ export class WeatherCardComponent implements OnInit {
       this.router.navigate(['/weather', { locationKey: this.weather.locationKey, locationName: this.weather.locationName }])
     }
   }
-
-  test(){
-    console.log('weather-card')
-  }
+  
 }
