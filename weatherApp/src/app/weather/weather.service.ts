@@ -32,9 +32,9 @@ export class WeatherService {
       if(el.mesureUnit !== mesureUnit){
         el.temperature = this.setCelsiusOrFahrenheit(el.temperature,mesureUnit);
         el.mesureUnit = mesureUnit;
-        return el
+        return {...el}
       }else{
-        return el
+        return {...el}
       }
     })
   }
