@@ -1,8 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { Weather } from '../models/weather.obj';
-import { Store } from '@ngrx/store';
-import { appState } from '../store/state/app.state';
 
 @Component({
   selector: 'app-weather-card',
@@ -10,22 +8,17 @@ import { appState } from '../store/state/app.state';
   styleUrls: ['./weather-card.component.css']
 })
 export class WeatherCardComponent implements OnInit {
-  @Input() weather:Weather; 
-  @Input() isFavotire: boolean;
+  @Input() weather: Weather;
+  @Input() isFavotire: boolean = false;
 
-  constructor( private route: ActivatedRoute, private store: Store<appState>) { }
+  constructor(private router: Router) { }
 
-  ngOnInit() {
-    console.log(this.isFavotire)
-   
+  ngOnInit() {}
+
+  showFavoriteWeather(): void {
+    if (this.isFavotire) {
+      this.router.navigate(['/weather', { locationKey: this.weather.locationKey, locationName: this.weather.locationName }])
+    }
   }
-
-  
-
-  // showFavoriteWeather(): void {
-  //   if (this.favoriteLocationForecast) {
-  //     this.router.navigate(['/weather', { locationKey: this.favoriteLocationForecast.locationKey, locationName: this.favoriteLocationForecast.locationName }])
-  //   }
-  // }
 
 }
