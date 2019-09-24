@@ -65,7 +65,6 @@ export class WeatherService {
     return this.daysOfWeek[getDate];
 }
 
-
   setWeatherIcon(iconNumber: number): string {
     if (iconNumber < 10) {
       return `https://developer.accuweather.com/sites/default/files/${'0' + iconNumber}-s.png`
