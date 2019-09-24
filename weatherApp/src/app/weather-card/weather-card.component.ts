@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Weather } from '../models/weather.obj';
 
@@ -8,13 +8,11 @@ import { Weather } from '../models/weather.obj';
   styleUrls: ['./weather-card.component.css'],
   changeDetection:ChangeDetectionStrategy.OnPush
 })
-export class WeatherCardComponent implements OnInit {
+export class WeatherCardComponent {
   @Input() weather: Weather;
   @Input() isFavotire: boolean = false;
 
   constructor(private router: Router) { }
-
-  ngOnInit() { }
 
   showFavoriteWeather(): void {
     if (this.isFavotire) {
