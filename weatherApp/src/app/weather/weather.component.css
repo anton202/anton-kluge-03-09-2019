@@ -12,22 +12,21 @@
   color: var(--font-color);
 }
 
-mat-form-field {
-  width: 100%;
-}
-
-.search-city {
-  width: 35%;
+.search-location{
   font-size: 2rem;
+  display: flex;
+  align-items: center;
+  width: 40%;
 }
 
-.search-city form{
-  display: inline-block;
-  width: 60%
+.search-location__input{
+  width: 65%;
 }
 
-.search-city button{
+.serach-location__btn{
   margin-left: 1rem;
+  width: 30%;
+  height: 45%;
 }
 
 .todays-weather-favorite {
@@ -103,7 +102,7 @@ app-weather-card{
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 1199px) {
   .container{
     top: 5%;
     left: 5%;
@@ -119,13 +118,14 @@ app-weather-card{
     justify-content: unset;
   }
 
-  .search-city {
+  .search-location {
     width: 80%;
     font-size: 1.5rem;
   }
 
-  .search-city button{
+  .serach-location__btn{
     margin-left: 2rem;
+    height: auto;
   }
 
   .todays-weather-favorite{

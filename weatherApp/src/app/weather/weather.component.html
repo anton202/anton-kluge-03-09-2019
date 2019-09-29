@@ -1,9 +1,8 @@
 <div class="container">
-  <div class="search-city">
-    <form [formGroup]="searchForm">
-      <mat-form-field>
+ 
+    <form [formGroup]="searchForm" class="search-location">
+      <mat-form-field class="search-location__input">
         <input #search formControlName="locationName" type="text" matInput placeholder="Enter City Name" [matAutocomplete]="auto">
-
         <mat-icon matSuffix (click)="getWeather()"><i class="material-icons">search</i></mat-icon>
         <mat-autocomplete #auto="matAutocomplete">
           <mat-option *ngFor="let location of locationNameSuggestion" [value]="location.LocalizedName">
@@ -12,9 +11,9 @@
         </mat-autocomplete>
       </mat-form-field>
       <mat-error *ngIf="locationNameDoseNotExist">Location name not found</mat-error>
+      <button class="serach-location__btn" mat-raised-button color="primary" (click)="onSearchSumbit()">Search</button>
     </form>
-    <button mat-raised-button color="primary" (click)="onSearchSumbit()">Search</button>
-  </div>
+  
   <div class="todays-weather-favorite">
     <div class="icon-city-container">
       <div class="weather-icon">
