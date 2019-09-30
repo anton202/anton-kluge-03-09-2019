@@ -8,11 +8,3 @@ export class Weather {
         public day: string,
     ) { }
 }
-
-export class DailyWeather {
-    constructor(
-        public temperature: number,
-        public weatherIcon: string,
-        public dayOfWeek: string
-        ) { }
-}
