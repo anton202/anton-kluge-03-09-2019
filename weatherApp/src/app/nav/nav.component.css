@@ -10,20 +10,21 @@ nav{
 a:link, a:active, a:visited{
     color: white;
     text-decoration: none;
-    font-size: 2rem;
+    
 }
 
 .link{
+    font-size: 2rem;
     padding:0rem 1rem;
     font-weight: 700;
     letter-spacing: 0.3rem;
 }
 
-.link i{
+.link .icon{
     vertical-align: -.1em;
 }
 
-span{
+.feature{
     cursor: pointer;
     font-size: 1.5rem;
     font-weight: 700;
@@ -31,4 +32,19 @@ span{
 
 .currentUnit{
     color: orange;
+}
+
+@media (max-width: 1199px) {
+    
+    .link{
+        font-size: 1.5rem;
+    }
+    
+    .icon{
+        font-size: 2rem;
+    }
+
+    .feature{
+        font-size: 1.2rem;
+    }
 }

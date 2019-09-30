@@ -1,11 +1,11 @@
 <nav>
-  <span appTheme>Dark Mode</span>
+  <span class="feature" appTheme>Dark Mode</span>
   <div>
-    <a class="link" routerLink="/weather"><i class="material-icons">home</i>Home</a>
-    <a class="link" routerLink="/favorites"><i class="material-icons">favorite</i>Favorites</a>
+    <a class="link" routerLink="/weather"><i class="material-icons icon">home</i>Home</a>
+    <a class="link" routerLink="/favorites"><i class="material-icons icon">favorite</i>Favorites</a>
   </div>
   <div class="temerature-unit">
-    <span (click)="changeTemperatureUnit()" [ngClass]="{currentUnit:tempUnit === 'c'}">C</span> |  
-    <span (click)="changeTemperatureUnit()" [ngClass]="{currentUnit:tempUnit === 'f'}">F</span>
+    <span class="feature" (click)="changeTemperatureUnit()" [ngClass]="{currentUnit:tempUnit === 'c'}">C</span> |  
+    <span class="feature" (click)="changeTemperatureUnit()" [ngClass]="{currentUnit:tempUnit === 'f'}">F</span>
   </div>
 </nav>
