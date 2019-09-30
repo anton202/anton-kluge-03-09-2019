@@ -1,6 +1,6 @@
 <div class="container">
  
-    <form [formGroup]="searchForm" class="search-location">
+    <form class="search-location" [formGroup]="searchForm" >
       <mat-form-field class="search-location__input">
         <input #search formControlName="locationName" type="text" matInput placeholder="Enter City Name" [matAutocomplete]="auto">
         <mat-icon matSuffix (click)="getWeather()"><i class="material-icons">search</i></mat-icon>
@@ -14,15 +14,11 @@
       <button class="serach-location__btn" mat-raised-button color="primary" (click)="onSearchSumbit()">Search</button>
     </form>
   
-  <div class="todays-weather-favorite">
-    <div class="icon-city-container">
-      <div class="weather-icon">
-        <img *ngIf="forecast" [src]="forecast[0].weatherIcon" alt="icon">
-      </div>
-      <div class="city-degree">
-        <span *ngIf="forecast">{{forecast[0].locationName}}</span>
-        <span *ngIf="forecast">{{forecast[0].temperature}}{{temperatureUnit}}</span>
-      </div>
+  <div class="todays-weather">
+    <div class="todays-weather__forecast">
+        <img class="todays-weather__icon" *ngIf="forecast" [src]="forecast[0].weatherIcon" alt="icon">
+        <span class="todays-weather__location-name" *ngIf="forecast">{{forecast[0].locationName}}</span>
+        <span class="todays-weather__temperature"  *ngIf="forecast">{{forecast[0].temperature}}{{temperatureUnit}}</span>
     </div>
     <div class="favorite">
       <button mat-fab (click)="addToFavorites()">

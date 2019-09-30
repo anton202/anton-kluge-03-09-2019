@@ -12,48 +12,59 @@
   color: var(--font-color);
 }
 
-.search-location{
+.search-location {
   font-size: 2rem;
   display: flex;
   align-items: center;
   width: 40%;
 }
 
-.search-location__input{
+.search-location__input {
   width: 65%;
 }
 
-.serach-location__btn{
+.serach-location__btn {
   margin-left: 1rem;
   width: 30%;
   height: 45%;
 }
 
-.todays-weather-favorite {
+.todays-weather {
   display: flex;
   justify-content: space-between;
   width: 100%;
 }
 
-.icon-city-container {
+.todays-weather__forecast {
   margin-left: 3rem;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 100%;
+}
+
+.todays-weather__icon{
+  align-self: center;
+}
+
+.todays-weather__location-name {
+  grid-column-start: 2;
+  grid-row-start: 1;
+  align-self: start;
+  margin-top: .5rem;
+}
+
+.todays-weather__temperature {
+  grid-column-start: 2;
+  grid-row-start: 1;
+  align-self: end;
+  grid-column-end: 2;
+  margin-bottom: .5rem;
+}
+
+.city-degree {
   display: flex;
-}
-
-.weather-icon{
-    display: flex;
-    justify-content: center;
-}
-
-.weather-icon img{
-  height: 4.5rem;
-  width: 7.5rem;
-}
-
-.city-degree{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
 .city-degree span {
@@ -64,36 +75,36 @@
   margin-right: 3rem;
 }
 
-.color-favorite{
+.color-favorite {
   color: blueviolet;
 }
 
-.progress-spinner mat-spinner{
+.progress-spinner mat-spinner {
   margin: auto;
 }
 
-.weeklyWeatherStatus{
+.weeklyWeatherStatus {
   font-size: 2rem;
 }
 
-.weather-days{
+.weather-days {
   display: flex;
   flex-direction: row;
   width: 85%;
   height: 50%;
   margin: auto;
-  justify-content: space-around
+  justify-content: space-around;
 }
 
-app-weather-card{
+app-weather-card {
   width: 17%;
   animation: slideWeatherCard 1.5s ease-out;
 }
 
-@keyframes slideWeatherCard{
+@keyframes slideWeatherCard {
   0% {
     opacity: 0;
-    transform: translateX(-300px)
+    transform: translateX(-300px);
   }
 
   100% {
@@ -103,15 +114,14 @@ app-weather-card{
 }
 
 @media (max-width: 1199px) {
-  .container{
+  .container {
     top: 5%;
     left: 5%;
     height: 85%;
     width: 90%;
-
   }
 
-  .weather-days{
+  .weather-days {
     flex-direction: column;
     height: 60%;
     overflow: auto;
@@ -123,20 +133,20 @@ app-weather-card{
     font-size: 1.5rem;
   }
 
-  .serach-location__btn{
+  .serach-location__btn {
     margin-left: 2rem;
     height: auto;
   }
 
-  .todays-weather-favorite{
+  .todays-weather-favorite {
     margin-top: 2rem;
   }
 
-  .city-degree{
-    font-size: 1.5rem
+  .city-degree {
+    font-size: 1.5rem;
   }
 
-  .weeklyWeatherStatus{
+  .weeklyWeatherStatus {
     font-size: 1.7rem;
     text-align: center;
     width: 80%;
@@ -144,7 +154,7 @@ app-weather-card{
     margin-bottom: 3rem;
   }
 
-  app-weather-card{
+  app-weather-card {
     width: 100%;
   }
 }
