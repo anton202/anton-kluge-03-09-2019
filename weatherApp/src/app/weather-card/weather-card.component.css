@@ -28,7 +28,7 @@
     width: 7.5rem;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 1199px) {
    .container{
        width: 90%;
        height: 6rem;
