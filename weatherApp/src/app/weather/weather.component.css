@@ -25,7 +25,7 @@
 
 .serach-location__btn {
   margin-left: 1rem;
-  width: 30%;
+  width: 20%;
   height: 45%;
 }
 
@@ -49,30 +49,21 @@
 .todays-weather__location-name {
   grid-column-start: 2;
   grid-row-start: 1;
-  align-self: start;
   margin-top: .5rem;
+  align-self: start;
 }
 
 .todays-weather__temperature {
   grid-column-start: 2;
   grid-row-start: 1;
-  align-self: end;
   grid-column-end: 2;
   margin-bottom: .5rem;
+  align-self: end;
 }
 
-.city-degree {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-
-.city-degree span {
-  display: block;
-}
-
-.favorite {
+.todays-weather__favorite {
   margin-right: 3rem;
+
 }
 
 .color-favorite {
@@ -87,7 +78,7 @@
   font-size: 2rem;
 }
 
-.weather-days {
+.weekly-forecast {
   display: flex;
   flex-direction: row;
   width: 85%;
@@ -121,7 +112,7 @@ app-weather-card {
     width: 90%;
   }
 
-  .weather-days {
+  .weekly-forecast {
     flex-direction: column;
     height: 60%;
     overflow: auto;
@@ -136,10 +127,19 @@ app-weather-card {
   .serach-location__btn {
     margin-left: 2rem;
     height: auto;
+    padding: 0;
   }
 
-  .todays-weather-favorite {
-    margin-top: 2rem;
+  .todays-weather__forecast {
+    margin-left: 1rem
+  }
+
+  .todays-weather__location-name{
+    margin-top: 1rem;
+  }
+
+  .todays-weather__temperature{
+    margin-bottom: 1rem;
   }
 
   .city-degree {

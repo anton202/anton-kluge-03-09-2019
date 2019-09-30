@@ -1,39 +1,40 @@
 <div class="container">
- 
-    <form class="search-location" [formGroup]="searchForm" >
-      <mat-form-field class="search-location__input">
-        <input #search formControlName="locationName" type="text" matInput placeholder="Enter City Name" [matAutocomplete]="auto">
-        <mat-icon matSuffix (click)="getWeather()"><i class="material-icons">search</i></mat-icon>
-        <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let location of locationNameSuggestion" [value]="location.LocalizedName">
-            {{ location.LocalizedName }}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
-      <mat-error *ngIf="locationNameDoseNotExist">Location name not found</mat-error>
-      <button class="serach-location__btn" mat-raised-button color="primary" (click)="onSearchSumbit()">Search</button>
-    </form>
-  
+  <form class="search-location" [formGroup]="searchForm">
+    <mat-form-field class="search-location__input">
+      <input #search formControlName="locationName" type="text" matInput placeholder="Enter City Name"
+        [matAutocomplete]="auto">
+      <mat-icon matSuffix (click)="getWeather()"><i class="material-icons">search</i></mat-icon>
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let location of locationNameSuggestion" [value]="location.LocalizedName">
+          {{ location.LocalizedName }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    
+    <mat-error *ngIf="locationNameDoseNotExist">Location name not found</mat-error>
+    <button class="serach-location__btn" mat-raised-button color="primary" (click)="onSearchSumbit()">Search</button>
+  </form>
+
   <div class="todays-weather">
     <div class="todays-weather__forecast">
-        <img class="todays-weather__icon" *ngIf="forecast" [src]="forecast[0].weatherIcon" alt="icon">
-        <span class="todays-weather__location-name" *ngIf="forecast">{{forecast[0].locationName}}</span>
-        <span class="todays-weather__temperature"  *ngIf="forecast">{{forecast[0].temperature}}{{temperatureUnit}}</span>
+      <img class="todays-weather__icon" *ngIf="forecast" [src]="forecast[0].weatherIcon" alt="icon">
+      <span class="todays-weather__location-name" *ngIf="forecast">{{forecast[0].locationName}}</span>
+      <span class="todays-weather__temperature" *ngIf="forecast">{{forecast[0].temperature}}{{temperatureUnit}}</span>
     </div>
-    <div class="favorite">
-      <button mat-fab (click)="addToFavorites()">
-        <mat-icon [ngClass]="{'color-favorite':isFavorite}">favorite</mat-icon>
-      </button>
-    </div>
+
+    <button class="todays-weather__favorite" mat-fab (click)="addToFavorites()">
+      <mat-icon class="todays-weather__icon" [ngClass]="{'color-favorite':isFavorite}">favorite</mat-icon>
+    </button>
   </div>
+
   <div class="progress-spinner" *ngIf="fetchingForecast">
-      <mat-spinner></mat-spinner>
+    <mat-spinner></mat-spinner>
   </div>
-  
+
   <div class="weeklyWeatherStatus" *ngIf="!fetchingForecast">
-      <span>{{weeklyWeatherStatus}}</span>
-    </div>
-  <div class="weather-days" *ngIf="!fetchingForecast">
-    <app-weather-card  *ngFor="let dailyForecast of forecast" [weather]="dailyForecast"></app-weather-card>
+    <span>{{weeklyWeatherStatus}}</span>
+  </div>
+  <div class="weekly-forecast" *ngIf="!fetchingForecast">
+    <app-weather-card *ngFor="let dailyForecast of forecast" [weather]="dailyForecast"></app-weather-card>
   </div>
 </div>
