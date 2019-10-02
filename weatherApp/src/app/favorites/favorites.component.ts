@@ -7,7 +7,7 @@ import { Weather } from '../models/weather.obj';
 @Component({
   selector: 'app-favorites',
   templateUrl: './favorites.component.html',
-  styleUrls: ['./favorites.component.css']
+  styleUrls: ['./favorites.component.scss']
 })
 export class FavoritesComponent implements OnInit {
   favorites: Array<Weather>;

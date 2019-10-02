@@ -23,7 +23,7 @@
               "src/favicon.ico"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": []
           },
@@ -70,8 +70,14 @@
           "options": {
             "browserTarget": "weatherApp:build"
           }
-        }       
+        }
       }
-    }},
-  "defaultProject": "weatherApp"
+    }
+  },
+  "defaultProject": "weatherApp",
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
+  }
 }

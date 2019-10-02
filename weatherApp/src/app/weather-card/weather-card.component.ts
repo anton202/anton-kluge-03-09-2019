@@ -5,7 +5,7 @@ import { Weather } from '../models/weather.obj';
 @Component({
   selector: 'app-weather-card',
   templateUrl: './weather-card.component.html',
-  styleUrls: ['./weather-card.component.css'],
+  styleUrls: ['./weather-card.component.scss'],
   changeDetection:ChangeDetectionStrategy.OnPush
 })
 export class WeatherCardComponent {
