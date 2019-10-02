@@ -1,95 +1,90 @@
+@import "../scss/adstracts/mixins";
+@import "../scss/adstracts/variables";
+
 .container {
+  @include setContiner(85%, 80%);
   background-color: var(--background-secondery);
   position: absolute;
-  width: 85%;
-  height: 80%;
   top: 10%;
   left: 8%;
-  border: 1px solid darkgray;
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: var(--font-color);
-}
 
-.search-location {
-  font-size: 2rem;
-  display: flex;
-  align-items: center;
-  width: 40%;
-}
+  .search-location {
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    width: 40%;
 
-.search-location__input {
-  width: 65%;
-}
+    &__input {
+      width: 65%;
+    }
 
-.serach-location__btn {
-  margin-left: 1rem;
-  width: 20%;
-  height: 45%;
-}
+    &__btn {
+      margin-left: 1rem;
+      width: 20%;
+      height: 45%;
+    }
+  }
 
-.todays-weather {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
+  .todays-weather {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 
-.todays-weather__forecast {
-  margin-left: 3rem;
-  display: grid;
-  grid-template-columns: 50% 50%;
-  grid-template-rows: 100%;
-}
+    &__forecast {
+      margin-left: 3rem;
+      display: grid;
+      grid-template-columns: 50% 50%;
+      grid-template-rows: 100%;
+    }
 
-.todays-weather__icon{
-  align-self: center;
-}
+    &__icon {
+      align-self: center;
+    }
 
-.todays-weather__location-name {
-  grid-column-start: 2;
-  grid-row-start: 1;
-  margin-top: .5rem;
-  align-self: start;
-}
+    &__location-name {
+      @include positionElementInGrid(start);
+      margin-top: 0.5rem;
+    }
 
-.todays-weather__temperature {
-  grid-column-start: 2;
-  grid-row-start: 1;
-  grid-column-end: 2;
-  margin-bottom: .5rem;
-  align-self: end;
-}
+    &__temperature {
+      @include positionElementInGrid(end);
+      grid-column-end: 2;
+      margin-bottom: 0.5rem;
+    }
 
-.todays-weather__favorite {
-  margin-right: 3rem;
+    &__favorite {
+      margin-right: 3rem;
+    }
+  }
 
-}
+  .color-favorite {
+    color: $favorite-color;
+  }
 
-.color-favorite {
-  color: blueviolet;
-}
+  .progress-spinner mat-spinner {
+    margin: auto;
+  }
 
-.progress-spinner mat-spinner {
-  margin: auto;
-}
+  .weeklyWeatherStatus {
+    font-size: 2rem;
+  }
 
-.weeklyWeatherStatus {
-  font-size: 2rem;
-}
+  .weekly-forecast {
+    display: flex;
+    flex-direction: row;
+    width: 85%;
+    height: 50%;
+    margin: auto;
+    justify-content: space-around;
+  }
 
-.weekly-forecast {
-  display: flex;
-  flex-direction: row;
-  width: 85%;
-  height: 50%;
-  margin: auto;
-  justify-content: space-around;
-}
-
-app-weather-card {
-  width: 17%;
-  animation: slideWeatherCard 1.5s ease-out;
+  app-weather-card {
+    width: 17%;
+    animation: slideWeatherCard 1.5s ease-out;
+  }
 }
 
 @keyframes slideWeatherCard {
@@ -110,51 +105,47 @@ app-weather-card {
     left: 5%;
     height: 85%;
     width: 90%;
-  }
 
-  .weekly-forecast {
-    flex-direction: column;
-    height: 60%;
-    overflow: auto;
-    justify-content: unset;
-  }
+    .search-location {
+      width: 80%;
+      font-size: 1.5rem;
 
-  .search-location {
-    width: 80%;
-    font-size: 1.5rem;
-  }
+      &__btn {
+        margin-left: 2rem;
+        height: auto;
+        padding: 0;
+      }
+    }
 
-  .serach-location__btn {
-    margin-left: 2rem;
-    height: auto;
-    padding: 0;
-  }
+    .weekly-forecast {
+      flex-direction: column;
+      height: 60%;
+      overflow: auto;
+      justify-content: unset;
+    }
 
-  .todays-weather__forecast {
-    margin-left: 1rem
-  }
+    .todays-weather__forecast {
+      margin-left: 1rem;
 
-  .todays-weather__location-name{
-    margin-top: 1rem;
-  }
+      .todays-weather__location-name {
+        margin-top: 1rem;
+      }
 
-  .todays-weather__temperature{
-    margin-bottom: 1rem;
-  }
+      .todays-weather__temperature {
+        margin-bottom: 1rem;
+      }
+    }
 
-  .city-degree {
-    font-size: 1.5rem;
-  }
+    .weeklyWeatherStatus {
+      font-size: 1.7rem;
+      text-align: center;
+      width: 80%;
+      margin-top: 3rem;
+      margin-bottom: 3rem;
+    }
 
-  .weeklyWeatherStatus {
-    font-size: 1.7rem;
-    text-align: center;
-    width: 80%;
-    margin-top: 3rem;
-    margin-bottom: 3rem;
-  }
-
-  app-weather-card {
-    width: 100%;
+    app-weather-card {
+      width: 100%;
+    }
   }
 }

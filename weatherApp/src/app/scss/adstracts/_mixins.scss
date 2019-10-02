@@ -1,0 +1,12 @@
+@mixin positionElementInGrid( $align) {
+  grid-column-start: 2;
+  grid-row-start: 1;
+  align-self: $align;
+}
+
+@mixin setContiner($width,$height) {
+    width: $width;
+    height: $height;
+    border: 1px solid darkgray;
+    color: var(--font-color);
+}
