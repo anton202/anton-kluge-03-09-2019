@@ -1,31 +1,30 @@
+@import '../scss/adstracts/mixins';
+
 .container{
+    @include setContiner(80%,90%);
     display: flex;
     flex-direction: column;
-    border: 1px solid darkgrey;
-    width: 80%;
-    height: 90%;
     background-color: var(--background-tertiary);
     border-radius: .5rem;
     justify-content: space-around;
     align-items: center;
     font-size: 1.5rem;
     margin: 0 1rem 1rem 1rem;
-    color: var(--font-color)
-}
 
-.container:hover{
-    transform: translateY(-.3rem);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, .2);
-}
-
-.container span{
-    display: block;
-}
-
-.container img{
-    display: block;
-    height: 4.5rem;
-    width: 7.5rem;
+    &:hover{
+        transform: translateY(-.3rem);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, .2);
+    }
+    
+    & span{
+        display: block;
+    }
+    
+    & img{
+        display: block;
+        height: 4.5rem;
+        width: 7.5rem;
+    }
 }
 
 @media (max-width: 1199px) {
