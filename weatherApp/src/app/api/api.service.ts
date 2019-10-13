@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ApiService {
-  private apiKey: string = '7Is6CpWd2Q1WMUQXR8AY9VJKLJte6xGM';
+  private apiKey: string = 'm5SbNtZN80TGWGWfld4czoy04UchcNhE';
   private apiUrlLocations: string = 'http://dataservice.accuweather.com/locations/v1';
   private apiUrlForecast: string = 'http://dataservice.accuweather.com/forecasts/v1';
 

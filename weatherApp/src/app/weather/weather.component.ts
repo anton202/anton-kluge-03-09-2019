@@ -42,6 +42,7 @@ export class WeatherComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.searchFormItialization();
     this.defaultForecast();
+    this.store.dispatch(new FavoritesAction.LoadFavorites())
 
     this.store.select('temperatureUnit')
       .subscribe(unit => {
@@ -113,10 +114,12 @@ export class WeatherComponent implements OnInit, AfterViewInit {
     const locationName = this.route.snapshot.paramMap.get('locationName');
     if (locationKey) {
       return this.getWeather(locationKey, locationName);
+    }else{
+      this.getWeather(this.telAvivLocationKey, 'Tel-Aviv')
     }
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(this.getForecastByGeoLocation.bind(this), this.getWeather.bind(this, this.telAvivLocationKey, 'Tel-Aviv'))
-    }
+    // if ("geolocation" in navigator) {
+    //   navigator.geolocation.getCurrentPosition(this.getForecastByGeoLocation.bind(this), this.getWeather.bind(this, this.telAvivLocationKey, 'Tel-Aviv'))
+    // }
   }
 
   private getForecastByGeoLocation(position: { coords: { latitude: number, longitude: number } }): void {
